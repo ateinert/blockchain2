@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 			if (blockcount > 0)
 			{
 				itoa(buffer, blockcount, 10);
-				sha256_file(itoa(blockcount), buffer);
+				sha256_file(buffer, buffer);
 			}
 			Block block = createBlock(blockcount, buffer);
 			blockcount++;
