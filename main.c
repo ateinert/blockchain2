@@ -55,8 +55,9 @@ int main(int argc, char **argv)
 			strcpy(buffer, "0");
 			if (blockcount > 0)
 			{
-				itoa(buffer, blockcount, 10);
-				sha256_file(buffer, buffer);
+				char str[129];
+				itoa(blockcount, str, 10);
+				sha256_file(str, buffer);
 			}
 			Block block = createBlock(blockcount, buffer);
 			blockcount++;
