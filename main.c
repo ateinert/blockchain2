@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 			int transactioncount = 0;
 			printf("Blocks sent: %d\n", blockcount);
 			printf("Transactions sent: %d\n", transactioncount);
-			printf("Press ENTER to send a block and 10 transactions");
+			printf("Press ENTER to send a block and 10 transactions\n");
 			fflush(stdout);
 			getchar();
 			char buffer[65];
