@@ -62,11 +62,13 @@ void server(char *service)
 				{
 					fprintf(stderr, "Recieving Block\n");
 					recieveBlock(ssock);
+					fprintf(stderr, "Recieved Block\n");
 				}
 				else if (buffer == 't')
 				{
 					fprintf(stderr, "Recieving Transaction\n");
 					recieveTransaction(ssock);	
+					fprintf(stderr, "Recieved Transaction\n");
 				}
 				exit(0);
 			default:	/* parent */
