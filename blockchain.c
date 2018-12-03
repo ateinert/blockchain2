@@ -36,7 +36,7 @@ void server(char *service)
 	(void) signal(SIGCHLD, reaper);
 	while (1)
 	{
-		fprintf(stderr, "Server Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
+		//fprintf(stderr, "Server Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 		alen = sizeof(fsin);
 		ssock = accept(msock, (struct sockaddr *)&fsin, &alen);
 		if (ssock < 0) 
@@ -49,17 +49,17 @@ void server(char *service)
 		{
 			case 0:		/* child */
 				(void) close(msock);
-				fprintf(stderr, "Server Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
+				//fprintf(stderr, "Server Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 				recieveBlock(ssock);
 				int i = 0;
-				/*for (; i < 1; i++)*/
+				/*for (; i < 1; i++)
 				{
 					recieveTransaction(ssock);
-				}
+				}*/
 	
 				exit(0);
 			default:	/* parent */
-				fprintf(stderr, "Server fork Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
+				//fprintf(stderr, "Server fork Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 				(void) close(ssock);
 				pause();
 				break;
@@ -135,14 +135,11 @@ Block recieveBlock(int fd)
 	}
 }
 
-void transmitBlock(Block block, char* host, int fd)
+void transmitBlock(Block block, char* host, int s)
 {
 	char buf[LINELEN+1];		/* buffer for one line of text	*/
-   	char endoffile[]="End of file\n";
-	int  n, cc;			/* socket descriptor, read count*/
-	int outchars, inchars;	/* characters sent and received	*/
 	char validMssg[]="Block Valid\n";
-	fprintf(stderr, "Broadcast block %d\n", s);
+	int cc;
 	if (write(s, &block, sizeof(Block)) < 0)
 	{
 		exit(1);
@@ -164,6 +161,7 @@ void transmitBlock(Block block, char* host, int fd)
 
 void broadcastBlock(Block block, char** hosts, int fd, int numHosts)
 {
+	int i;
 	for (i = 0; i < numHosts; i++)
 	{
 		char *host = hosts[i];
@@ -212,9 +210,8 @@ Transaction recieveTransaction(int fd)
 {
 	Transaction trans;
 	char buf[BUFSIZ];
-	char endOfFile_Indicator[]="End of file\n";
 	char validMssg[]="Transaction Valid\n";
-	int	cc;
+	int cc;
 	
 	cc = read(fd, &trans, sizeof(Transaction));
 	//printf("recieved: %s, %d\n", buf,cc);
@@ -233,36 +230,38 @@ Transaction recieveTransaction(int fd)
 	}
 }
 
-void broadcastTransaction(Transaction trans, char **hosts, char *sock, int numHosts)
+void transmitTransaction(Transaction trans, char *host, int s)
 {
 	char buf[LINELEN+1];		/* buffer for one line of text	*/
    	char endoffile[]="End of file\n";
-	int s, i, n, cc;			/* socket descriptor, read count*/
-	int outchars, inchars;	/* characters sent and received	*/
 	char validMssg[]="Transaction Valid\n";
-	for (i = 0; i < numHosts; i++)
+	if (write(s, &trans, sizeof(Transaction)) < 0)
 	{
-		char *host = hosts[i];
-		s = connectTCP(host, sock);
-		fprintf(stderr, "Broadcast block %d\n", s);
-		if (write(s, &trans, sizeof(Transaction)) < 0)
+		exit(1);
+	} 
+
+	while (cc = read(s, buf, sizeof buf)) 
+	{
+		if (cc < 0)
 		{
 			exit(1);
 		} 
-		
-		while (cc = read(s, buf, sizeof buf)) 
+		if(strncmp(buf,validMssg,strlen(validMssg))==0) 
 		{
-			if (cc < 0)
-			{
-				exit(1);
-			} 
-			if(strncmp(buf,validMssg,strlen(validMssg))==0) 
-			{
-				saveTransactionToFile(trans);
-				//printf("File Recieved and Verified\n");
-				break;
-			}
+			saveTransactionToFile(trans);
+			//printf("File Recieved and Verified\n");
+			break;
 		}
+	}
+}
+
+void broadcastTransaction(Transaction trans, char **hosts, int s, int numHosts)
+{
+	int i;
+	for (i = 0; i < numHosts; i++)
+	{
+		char *host = hosts[i];
+		transmitTransaction(trans, host, s);
 	}
 }
 
