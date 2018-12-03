@@ -25,18 +25,18 @@ int main(int argc, char **argv)
 	const int numHosts = argc - 2;
 	char *hosts[numHosts];
 	int i;
-	for (i = 0; i < numHosts)
+	for (i = 0; i < numHosts; i++)
 	{
 		hosts[i] = argv[i + 2];
 	}
 	
 	(void) signal(SIGCHLD, reaper);
-	pid = fork();
+	int pid = fork();
 	
 	if (pid == 0)
 	{
 		//child server
-		server();
+		(void) server();
 	}
 	else if (pid > 0)
 	{
