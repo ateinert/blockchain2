@@ -31,12 +31,10 @@ void server(char *service)
 	
 	// listen for transaction
 	msock = passiveTCP(service, QLEN);
-	// listen for block
-	// listen for chain
 	(void) signal(SIGCHLD, reaper);
 	while (1)
 	{
-		fprintf(stderr, "Server Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
+		//fprintf(stderr, "Server Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 		alen = sizeof(fsin);
 		ssock = accept(msock, (struct sockaddr *)&fsin, &alen);
 		if (ssock < 0) 
@@ -49,7 +47,7 @@ void server(char *service)
 		{
 			case 0:		/* child */
 				(void) close(msock);
-				fprintf(stderr, "Child: %d Open\n", getpid());
+				
 				//determine if block or transaction
 				char buffer = '\0';
 				int cc;
@@ -67,7 +65,6 @@ void server(char *service)
 				{
 					recieveTransaction(ssock);	
 				}
-				fprintf(stderr, "Child: %d Close\n", getpid());
 				exit(0);
 			default:	/* parent */
 				(void) close(ssock);
@@ -123,7 +120,6 @@ Block recieveBlock(int fd)
 {
 	Block block;
 	char buf[BUFSIZ];
-	char endOfFile_Indicator[]="End of file\n";
 	char validMssg[]="Block Valid\n";
 	int cc;
 	
@@ -132,6 +128,7 @@ Block recieveBlock(int fd)
 	{
 		exit(1);
 	}
+	fprintf(stderr,"Block recieved\n");
 	if (blockValidate(block))
 	{
 		saveBlockToFile(block);
@@ -139,8 +136,10 @@ Block recieveBlock(int fd)
 		{
 			exit(1);
 		}
+		fprintf(stderr,"Block verified\n");
 		return block;
 	}
+	
 }
 
 void transmitBlock(Block block, char* host, int s)
@@ -154,11 +153,12 @@ void transmitBlock(Block block, char* host, int s)
 	{
 		exit(1);
 	}
-	
+	fprintf(stderr,"Header Sent\n");
 	if (write(s, &block, sizeof(Block)) < 0)
 	{
 		exit(1);
 	}
+	fprintf(stderr,"Block Sent\n");
 	while (cc = read(s, buf, sizeof buf)) 
 	{
 		if (cc < 0)
@@ -167,7 +167,7 @@ void transmitBlock(Block block, char* host, int s)
 		}
 		if(strncmp(buf,validMssg,strlen(validMssg))==0) 
 		{
-			printf("File Recieved and Verified\n");
+			printf("Block Recieved and Verified\n");
 			saveBlockToFile(block);
 			break;
 		}
@@ -231,7 +231,8 @@ Transaction recieveTransaction(int fd)
 	if (cc < 0)
 	{
 		exit(1);
-	} 
+	}
+	fprintf(stderr,"Transaction Recieved\n");
 	if (transactionValidate(trans))
 	{
 		saveTransactionToFile(trans);
@@ -239,6 +240,7 @@ Transaction recieveTransaction(int fd)
 		{
 			exit(1);
 		} 
+		fprintf(stderr,"Transaction Verified\n");
 		return trans;
 	}
 }
@@ -253,10 +255,12 @@ void transmitTransaction(Transaction trans, char *host, int s)
 	{
 		exit(1);
 	}
+	fprintf(stderr,"Header Sent\n");
 	if (write(s, &trans, sizeof(Transaction)) < 0)
 	{
 		exit(1);
 	} 
+	fprintf(stderr,"Transaction Sent\n");
 	while (cc = read(s, buf, sizeof buf)) 
 	{
 		if (cc < 0)
@@ -266,7 +270,7 @@ void transmitTransaction(Transaction trans, char *host, int s)
 		if(strncmp(buf,validMssg,strlen(validMssg))==0) 
 		{
 			saveTransactionToFile(trans);
-			printf("File Recieved and Verified\n");
+			printf("Transaction Recieved and Verified\n");
 			break;
 		}
 	}
