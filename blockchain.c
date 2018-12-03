@@ -60,10 +60,12 @@ void server(char *service)
 				}
 				if (buffer == 'b')
 				{
+					fprintf(stderr, "Recieving Block\n");
 					recieveBlock(ssock);
 				}
 				else if (buffer == 't')
 				{
+					fprintf(stderr, "Recieving Transaction\n");
 					recieveTransaction(ssock);	
 				}
 				exit(0);
