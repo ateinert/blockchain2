@@ -15,7 +15,7 @@ typedef struct {
 	time_t creationTime;
 } Transaction;
 
-void server(char*)
+void server(char*);
 
 int blockValidate(Block);
 int transactionValidate(Transaction);
