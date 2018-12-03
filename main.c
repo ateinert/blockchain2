@@ -56,11 +56,10 @@ int main(int argc, char **argv)
 			if (blockcount > 0)
 			{
 				char str[129];
-				(void)itoa(blockcount, str, 10);
+				sprintf(str, "%d", blockCount - 1)
 				sha256_file(str, buffer);
 			}
 			Block block = createBlock(blockcount, buffer);
-			blockcount++;
 			broadcastBlock(block, hosts, service, numHosts);
 			for (i = 0; i < 10; i++)
 			{
@@ -69,6 +68,7 @@ int main(int argc, char **argv)
 				broadcastTransaction(trans, hosts, service, numHosts);
 				transactioncount++;
 			}
+			blockcount++;
 		}
 	}
 	else
