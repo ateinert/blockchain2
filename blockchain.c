@@ -206,6 +206,7 @@ void saveBlockToFile(Block block)
 		exit (1);
 	}
 	fclose(file);
+	fprintf(stderr,"Block saved to file\n");
 }
 
 Block loadBlockFromFile(char *str)
@@ -311,6 +312,7 @@ void saveTransactionToFile(Transaction trans)
 		exit (1);
 	}
 	fclose(file);
+	fprintf(stderr,"Transaction saved to file\n");
 }
 
 Transaction loadTransactionFromFile(char *str)
