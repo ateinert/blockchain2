@@ -56,10 +56,12 @@ void server(char *service)
 				{
 					recieveTransaction(ssock);
 				}
+	
 				exit(0);
 			default:	/* parent */
 				fprintf(stderr, "Server fork Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 				(void) close(ssock);
+				pause();
 				break;
 			case -1:
 				exit(1);
@@ -144,6 +146,7 @@ void broadcastBlock(Block block, char** hosts, char *sock, int numHosts)
 	{
 		char *host = hosts[i];
 		s = connectTCP(host, sock);
+		fprintf(stderr, "Broadcast block %d\n", s);
 		if (write(s, &block, sizeof(Block)) < 0)
 		{
 			exit(1);
@@ -237,6 +240,7 @@ void broadcastTransaction(Transaction trans, char **hosts, char *sock, int numHo
 	{
 		char *host = hosts[i];
 		s = connectTCP(host, sock);
+		fprintf(stderr, "Broadcast block %d\n", s);
 		if (write(s, &trans, sizeof(Transaction)) < 0)
 		{
 			exit(1);
