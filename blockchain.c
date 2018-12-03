@@ -76,7 +76,7 @@ int transactionValidate(Transaction trans)
 
 Block createBlock(int num, char hash[65])
 {
-	string title[128];
+	char title[128];
 	sprintf(title, "%d", num);
 	Block block = {
 		hash,
