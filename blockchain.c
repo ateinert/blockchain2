@@ -183,6 +183,7 @@ void broadcastBlock(Block block, char** hosts, char *service, int numHosts)
 	for (i = 0; i < numHosts; i++)
 	{
 		char *host = hosts[i];
+		fprintf(stderr, "Connecting to host: %s, service: %s\n", host, service);
 		s = connectTCP(host, service);
 		transmitBlock(block, host, s);
 	}
