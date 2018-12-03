@@ -257,17 +257,16 @@ void transmitTransaction(Transaction trans, char *host, int s)
 	char validMssg[]="Transaction Valid\n";
 	int cc;
 	char header = 'b';
-
+	fprintf(stderr, "\nSending Header\n");
 	if (write(s, &header, sizeof(header)) < 0)
 	{
 		exit(1);
 	}
-	
+	fprintf(stderr, "\Sending Transaction\n");
 	if (write(s, &trans, sizeof(Transaction)) < 0)
 	{
 		exit(1);
 	} 
-
 	while (cc = read(s, buf, sizeof buf)) 
 	{
 		if (cc < 0)
