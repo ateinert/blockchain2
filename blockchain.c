@@ -168,7 +168,7 @@ void saveBlockToFile(Block block)
 	//printf("Attempting to save block: %s\n", block.blockTitle);
 	if (file == NULL)
 	{ 
-		printf("File: %s\n", block.blockTitle);
+		fprintf(stderr,"File: %s\n", block.blockTitle);
 		fprintf(stderr, "\nError opening file1\n"); 
 		{
 			exit(1);
