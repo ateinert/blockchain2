@@ -35,14 +35,13 @@ int main(int argc, char **argv)
 	
 	if (pid > 0)
 	{
-		//child server
+		//parent
 		(void) server(service);
+		exit(0);
 	}
 	else if (pid == 0)
 	{
-		// parent ui and client
-		// design a user interface
-		// only stdout from here
+		//child
 		while (1)
 		{
 			int blockcount = 0;
