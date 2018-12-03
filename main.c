@@ -52,8 +52,6 @@ int main(int argc, char **argv)
 			printf("Transactions sent: %d\n", transactioncount);
 			printf("Press ENTER to send a block and 10 transactions\n");
 			fflush(stdout);
-			char a;
-			scanf(" %c", &a);
 			getchar();
 			char buffer[65];
 			strcpy(buffer, "0");
