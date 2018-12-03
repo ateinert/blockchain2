@@ -37,12 +37,11 @@ void server(char *service)
 	while (1)
 	{
 		alen = sizeof(fsin);
-		ssock = accept(msock1, (sockaddr *)&fsin, (socklen_t *)&alen);
+		ssock = accept(msock1, &fsin, &alen);
 		if (ssock < 0) 
 		{
 			if (errno == EINTR)   //system call was interrupted permaturely with a signal before it was able to complete
 				continue;
-			cerr << "socket failure" << endl;
 			exit(EXIT_FAILURE);
 		}
 		switch (fork()) 
