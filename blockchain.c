@@ -58,6 +58,7 @@ void server(char *service)
 				{
 					exit(1);
 				}
+				fprintf(stderr, "Header: %c\n", buffer);
 				if (buffer == 'b')
 				{
 					recieveBlock(ssock);
