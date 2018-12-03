@@ -305,33 +305,6 @@ void transmitTransaction(Transaction trans, char *host, int s)
 			break;
 		}
 	}
-	/*	char buf[LINELEN+1];		/buffer for one line of text
-	char validMssg[]="Block Valid\n";
-	int cc;
-	char header = 'b';
-
-	if (write(s, &header, sizeof(header)) < 0)
-	{
-		exit(1);
-	}
-	
-	if (write(s, &block, sizeof(Block)) < 0)
-	{
-		exit(1);
-	}
-	while (cc = read(s, buf, sizeof buf)) 
-	{
-		if (cc < 0)
-		{
-			exit(1);
-		}
-		if(strncmp(buf,validMssg,strlen(validMssg))==0) 
-		{
-			//printf("File Recieved and Verified\n");
-			saveBlockToFile(block);
-			break;
-		}
-	}*/
 }
 
 void broadcastTransaction(Transaction trans, char **hosts, char *service, int numHosts)
