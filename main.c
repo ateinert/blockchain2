@@ -64,13 +64,13 @@ int main(int argc, char **argv)
 			Block block = createBlock(blockcount, buffer);
 			//fprintf(stderr, "Block: %s", block.blockTitle);
 			broadcastBlock(block, hosts, service, numHosts);
-			/*for (i = 0; i < 1; i++)
+			/*for (i = 0; i < 1; i++)*/
 			{
 				strcpy(buffer, "0");
 				Transaction trans = createTransaction(transactioncount, blockcount, buffer, id, license);
 				broadcastTransaction(trans, hosts, service, numHosts);
 				transactioncount++;
-			}*/
+			}
 			blockcount++;
 		}
 	}
