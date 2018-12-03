@@ -135,35 +135,39 @@ Block recieveBlock(int fd)
 	}
 }
 
-void broadcastBlock(Block block, char** hosts, char *sock, int numHosts)
+void transmitBlock(Block block, char* host, int fd)
 {
 	char buf[LINELEN+1];		/* buffer for one line of text	*/
    	char endoffile[]="End of file\n";
-	int s, i, n, cc;			/* socket descriptor, read count*/
+	int  n, cc;			/* socket descriptor, read count*/
 	int outchars, inchars;	/* characters sent and received	*/
 	char validMssg[]="Block Valid\n";
-	for (i = 0; i < numHosts; i++)
+	fprintf(stderr, "Broadcast block %d\n", s);
+	if (write(s, &block, sizeof(Block)) < 0)
 	{
-		char *host = hosts[i];
-		s = connectTCP(host, sock);
-		fprintf(stderr, "Broadcast block %d\n", s);
-		if (write(s, &block, sizeof(Block)) < 0)
+		exit(1);
+	}
+	while (cc = read(s, buf, sizeof buf)) 
+	{
+		if (cc < 0)
 		{
 			exit(1);
 		}
-		while (cc = read(s, buf, sizeof buf)) 
+		if(strncmp(buf,validMssg,strlen(validMssg))==0) 
 		{
-			if (cc < 0)
-			{
-				exit(1);
-			}
-			if(strncmp(buf,validMssg,strlen(validMssg))==0) 
-			{
-				printf("File Recieved and Verified\n");
-				saveBlockToFile(block);
-				break;
-			}
+			//printf("File Recieved and Verified\n");
+			saveBlockToFile(block);
+			break;
 		}
+	}
+}
+
+void broadcastBlock(Block block, char** hosts, int fd, int numHosts)
+{
+	for (i = 0; i < numHosts; i++)
+	{
+		char *host = hosts[i];
+		transmitBlock(block, host, fd);
 	}
 }
 
