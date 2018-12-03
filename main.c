@@ -44,10 +44,10 @@ int main(int argc, char **argv)
 	{
 		//fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 		//child
+		int blockcount = 0;
+		int transactioncount = 0;
 		while (1)
 		{
-			int blockcount = 0;
-			int transactioncount = 0;
 			printf("Blocks sent: %d\n", blockcount);
 			printf("Transactions sent: %d\n", transactioncount);
 			printf("Press ENTER to send a block and 10 transactions\n");
