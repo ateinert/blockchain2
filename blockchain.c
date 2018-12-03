@@ -37,7 +37,7 @@ void server(char *service)
 	while (1)
 	{
 		alen = sizeof(fsin);
-		ssock = accept(msock, &fsin, &alen);
+		ssock = accept(msock, (sockaddr_in *)&fsin, &alen);
 		if (ssock < 0) 
 		{
 			if (errno == EINTR)   //system call was interrupted permaturely with a signal before it was able to complete
