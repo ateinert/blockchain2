@@ -70,7 +70,6 @@ void server(char *service)
 				exit(0);
 			default:	/* parent */
 				(void) close(ssock);
-				break;
 			case -1:
 				exit(1);
 		}
