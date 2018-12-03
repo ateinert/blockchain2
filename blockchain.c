@@ -34,7 +34,7 @@ void server(char *service)
 	(void) signal(SIGCHLD, reaper);
 	while (1)
 	{
-		//fprintf(stderr, "Server Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
+		fprintf(stderr, "Server Parent: My PID: %d\n", getpid());
 		alen = sizeof(fsin);
 		ssock = accept(msock, (struct sockaddr *)&fsin, &alen);
 		if (ssock < 0) 
