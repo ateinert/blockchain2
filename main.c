@@ -62,13 +62,11 @@ int main(int argc, char **argv)
 				sha256_file(str, buffer);
 			}
 			Block block = createBlock(blockcount, buffer);
-			//broadcastBlock(block, hosts, service, numHosts);
+			broadcastBlock(block, hosts, service, numHosts);
 
 			strcpy(buffer, "0");
 			Transaction trans = createTransaction(transactioncount, blockcount, buffer, id, license);
-			fprintf(stderr, "Transaction Start\n");
-			broadcastTransaction(trans, hosts, service, numHosts);
-			fprintf(stderr, "Transaction End\n");
+			//broadcastTransaction(trans, hosts, service, numHosts);
 			transactioncount++;
 			blockcount++;
 		}
