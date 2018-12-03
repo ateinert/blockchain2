@@ -37,7 +37,7 @@ void server(char *service)
 	while (1)
 	{
 		alen = sizeof(fsin);
-		ssock = accept(msock1, &fsin, &alen);
+		ssock = accept(msock, &fsin, &alen);
 		if (ssock < 0) 
 		{
 			if (errno == EINTR)   //system call was interrupted permaturely with a signal before it was able to complete
@@ -64,12 +64,12 @@ void server(char *service)
 	}
 }
 
-Block createBlock(int, char[65])
+Block createBlock(int num, char hash[65])
 {
 	
 }
 
-Transaction createTransaction(int, int, char[65], char[257], char[129])
+Transaction createTransaction(int blocknum, int transnum, char hash[65], char id[257], char key[129])
 {
 	
 }
