@@ -24,7 +24,7 @@
 
 void server(char *service)
 {
-	int msock;;
+	int msock;
 	int ssock;
 	int alen;
 	struct sockaddr_in fsin;
