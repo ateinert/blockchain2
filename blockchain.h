@@ -17,6 +17,16 @@ typedef struct {
 
 void server(char*);
 
+int blockValidate(Block block)
+{
+	return 1;
+}
+
+int transactionValidate(Transaction trans)
+{
+	return 1;
+}
+
 Block createBlock(int, char[65]);
 Transaction createTransaction(int, int, char[65], char[257], char[129]);
 
