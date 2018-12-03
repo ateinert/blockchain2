@@ -59,12 +59,15 @@ void server(char *service)
 				fprintf(stderr, "Header: %c\n", buffer);
 				if (buffer == 'b')
 				{
+					fprintf(stderr,"Recieve Block: Function Start\n");
 					recieveBlock(ssock);
+					fprintf(stderr,"Recieve Block: Function End\n");
 				}
 				else if (buffer == 't')
 				{
 					recieveTransaction(ssock);	
 				}
+				fprintf(stderr,"Child close\n");
 				exit(0);
 				break;
 			default:	/* parent */
