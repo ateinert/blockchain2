@@ -191,7 +191,7 @@ void broadcastTransaction(Transaction trans, char **hosts, char *sock, int numHo
 	for (i = 0; i < numHosts; i++)
 	{
 		char *host = hosts[i];
-		s = connectTCP(host, sock.c_str());
+		s = connectTCP(host, sock);
 		if (write(s, &trans, sizeof(Transaction)) < 0)
 		{
 			exit(1);
