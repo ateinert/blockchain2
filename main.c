@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 			printf("Press ENTER to send a block and 10 transactions\n");
 			fflush(stdout);
 			char a;
-			scan("%c:, a);
+			scanf("%c:, a);
 			getchar();
 			char buffer[65];
 			strcpy(buffer, "0");
