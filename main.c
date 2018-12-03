@@ -33,12 +33,12 @@ int main(int argc, char **argv)
 	(void) signal(SIGCHLD, reaper);
 	int pid = fork();
 	
-	if (pid == 0)
+	if (pid > 0)
 	{
 		//child server
 		(void) server(service);
 	}
-	else if (pid > 0)
+	else if (pid == 0)
 	{
 		// parent ui and client
 		// design a user interface
