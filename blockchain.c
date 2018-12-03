@@ -267,6 +267,7 @@ void transmitTransaction(Transaction trans, char *host, int s)
 	{
 		exit(1);
 	} 
+	fprintf(stderr, "Sent\n");
 	while (cc = read(s, buf, sizeof buf)) 
 	{
 		fprintf(stderr, "Waiting for response\n");
