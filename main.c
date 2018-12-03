@@ -20,7 +20,6 @@ int main(int argc, char **argv)
 	{
 		exit(1);	
 	}
-	
 	char *service = argv[1];
 	const int numHosts = argc - 2;
 	char *hosts[numHosts];
@@ -29,6 +28,7 @@ int main(int argc, char **argv)
 	{
 		hosts[i] = argv[i + 2];
 	}
+	
 	
 	(void) signal(SIGCHLD, reaper);
 	int pid = fork();
@@ -50,6 +50,7 @@ int main(int argc, char **argv)
 			printf("Blocks sent: %d\n", blockcount);
 			printf("Transactions sent: %d\n", transactioncount);
 			printf("Press ENTER to send a block and 10 transactions");
+			fflush(stdout);
 			getchar();
 			char buffer[65];
 			strcpy(buffer, "0");
