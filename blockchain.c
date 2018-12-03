@@ -50,13 +50,22 @@ void server(char *service)
 			case 0:		/* child */
 				(void) close(msock);
 				//fprintf(stderr, "Server Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
-				recieveBlock(ssock);
-				int i = 0;
-				/*for (; i < 1; i++)
+				//determine if block or transaction
+				char buffer;
+				int cc;
+				cc = read(ssock, &buffer, sizeof(buffer));
+				if (cc < 0)
 				{
-					recieveTransaction(ssock);
-				}*/
-	
+					exit(1);
+				}
+				if (buffer == 'b')
+				{
+					recieveBlock(ssock);
+				}
+				else if (buffer == 't')
+				{
+					recieveTransaction(ssock);	
+				}
 				exit(0);
 			default:	/* parent */
 				//fprintf(stderr, "Server fork Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
@@ -140,6 +149,13 @@ void transmitBlock(Block block, char* host, int s)
 	char buf[LINELEN+1];		/* buffer for one line of text	*/
 	char validMssg[]="Block Valid\n";
 	int cc;
+	char header = 'b';
+
+	if (write(s, &header, sizeof(header)) < 0)
+	{
+		exit(1);
+	}
+	
 	if (write(s, &block, sizeof(Block)) < 0)
 	{
 		exit(1);
@@ -234,8 +250,15 @@ Transaction recieveTransaction(int fd)
 void transmitTransaction(Transaction trans, char *host, int s)
 {
 	char buf[LINELEN+1];		/* buffer for one line of text	*/
-   	char endoffile[]="End of file\n";
 	char validMssg[]="Transaction Valid\n";
+	int cc;
+	char header = 'b';
+
+	if (write(s, &header, sizeof(header)) < 0)
+	{
+		exit(1);
+	}
+	
 	if (write(s, &trans, sizeof(Transaction)) < 0)
 	{
 		exit(1);
