@@ -237,7 +237,7 @@ void saveTransactionToFile(Transaction trans)
 {
 	FILE *file;
 	char s[128];
-	sprintf(s, "%d", trans.transactionCount)
+	sprintf(s, "%d", trans.transactionCount);
 	file = fopen(s, "w");
 	if (file == NULL) 
 	{ 
