@@ -36,7 +36,9 @@ void server(char *service)
 	{
 		fprintf(stderr, "Server Parent: My PID: %d\n", getpid());
 		alen = sizeof(fsin);
+		fprintf(stderr, "Server Parent Before Accept\n");
 		ssock = accept(msock, (struct sockaddr *)&fsin, &alen);
+		fprintf(stderr, "Server Parent After Accept, ssock: %d\n", ssock);
 		if (ssock < 0) 
 		{
 			if (errno == EINTR)   //system call was interrupted permaturely with a signal before it was able to complete
