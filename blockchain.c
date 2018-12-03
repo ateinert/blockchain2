@@ -64,6 +64,16 @@ void server(char *service)
 	}
 }
 
+int blockValidate(Block block)
+{
+	return 1;
+}
+
+int transactionValidate(Transaction trans)
+{
+	return 1;
+}
+
 Block createBlock(int num, char hash[65])
 {
 	
