@@ -9,6 +9,7 @@ typedef struct {
 
 typedef struct {
 	int transactionCount;
+	int parentBlock;
 	char prevHash[65];
 	char ownerKey[257];
 	char license[129];
