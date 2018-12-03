@@ -79,11 +79,13 @@ Block createBlock(int num, char hash[65])
 	char title[128];
 	sprintf(title, "%d", num);
 	Block block = {
-		(char[])hash,
-		(char[])title,
+		"o",
+		"o",
 		num,
 		time(0)
 	};
+	strcpy(block.prevHash, hash);
+	strcpy(block.blockTitle, title);
 	return block;
 }
 
@@ -92,11 +94,14 @@ Transaction createTransaction(int blocknum, int transnum, char hash[65], char id
 	Transaction trans = {
 		transnum,
 		blocknum,
-		hash,
-		id,
-		key,
+		"o",
+		"o",
+		"o",
 		time(0)
 	};
+	strcpy(trans.prevHash, hash);
+	strcpy(trans.ownerKey, id);
+	strcpy(trans.license, key);
 	return trans;
 }
 
