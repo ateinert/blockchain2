@@ -62,9 +62,9 @@ int main(int argc, char **argv)
 				sha256_file(str, buffer);
 			}
 			Block block = createBlock(blockcount, buffer);
-			//fprintf(stderr, "Block: %s", block.blockTitle);
-			int s, i;
+			fprintf(stderr, "Block Sent\n");
 			broadcastBlock(block, hosts, service, numHosts);
+			fprintf(stderr, "Block Recieved\n");
 
 			strcpy(buffer, "0");
 			Transaction trans = createTransaction(transactioncount, blockcount, buffer, id, license);
