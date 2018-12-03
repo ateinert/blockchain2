@@ -168,7 +168,7 @@ void saveBlockToFile(Block block)
 	//printf("Attempting to save block: %s\n", block.blockTitle);
 	if (file == NULL)
 	{ 
-		fprintf(stderr, "\nError opening file\n"); 
+		fprintf(stderr, "\nError opening file1\n"); 
 		{
 			exit(1);
 		} 
@@ -188,7 +188,7 @@ Block loadBlockFromFile(char *str)
 	file = fopen(str, "r");
 	if (file == NULL) 
 	{ 
-		fprintf(stderr, "\nError opening file\n"); 
+		fprintf(stderr, "\nError opening file2\n"); 
 		exit (1); 
 	}
 	while(fread(&block, sizeof(Block), 1, file));
@@ -262,7 +262,7 @@ void saveTransactionToFile(Transaction trans)
 	file = fopen(s, "w");
 	if (file == NULL) 
 	{ 
-		fprintf(stderr, "\nError opening file\n"); 
+		fprintf(stderr, "\nError opening file3\n"); 
 		{
 			exit(1);
 		} 
@@ -283,7 +283,7 @@ Transaction loadTransactionFromFile(char *str)
 	file = fopen(str, "r");
 	if (file == NULL) 
 	{ 
-		fprintf(stderr, "\nError opening file\n"); 
+		fprintf(stderr, "\nError opening file4\n"); 
 		exit (1); 
 	}
 	while(fread(&trans, sizeof(Transaction), 1, file));
