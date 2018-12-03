@@ -153,7 +153,7 @@ void broadcastBlock(Block block, char** hosts, char *sock, int numHosts)
 			}
 			if(strncmp(buf,validMssg,strlen(validMssg))==0) 
 			{
-				//printf("File Recieved and Verified\n");
+				printf("File Recieved and Verified\n");
 				saveBlockToFile(block);
 				break;
 			}
