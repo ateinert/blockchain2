@@ -262,7 +262,7 @@ void transmitTransaction(Transaction trans, char *host, int s)
 	{
 		exit(1);
 	}
-	fprintf(stderr, "\Sending Transaction\n");
+	fprintf(stderr, "Sending Transaction\n");
 	if (write(s, &trans, sizeof(Transaction)) < 0)
 	{
 		exit(1);
