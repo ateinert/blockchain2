@@ -51,11 +51,11 @@ void server(char *service)
 				(void) close(msock);
 				fprintf(stderr, "Server Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 				recieveBlock(ssock);
-				int i = 0;
+				/*int i = 0;
 				for (; i < 1; i++)
 				{
 					recieveTransaction(ssock);
-				}
+				}*/
 				exit(0);
 			default:	/* parent */
 				fprintf(stderr, "Server fork Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
