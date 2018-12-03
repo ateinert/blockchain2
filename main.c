@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 			if (blockcount > 0)
 			{
 				char str[129];
-				sprintf(str, "%d", blockCount - 1)
+				sprintf(str, "%d", blockcount - 1);
 				sha256_file(str, buffer);
 			}
 			Block block = createBlock(blockcount, buffer);
