@@ -60,9 +60,7 @@ void server(char *service)
 				}
 				if (buffer == 'b')
 				{
-					fprintf(stderr, "Recieving Block\n");
 					recieveBlock(ssock);
-					fprintf(stderr, "Recieved Block\n");
 				}
 				else if (buffer == 't')
 				{
@@ -281,7 +279,7 @@ void transmitTransaction(Transaction trans, char *host, int s)
 	char validMssg[]="Transaction Valid\n";
 	int cc;
 	char header = 't';
-	fprintf(stderr, "\nSending Header\n");
+	fprintf(stderr, "Sending Header\n");
 	if (write(s, &header, sizeof(header)) < 0)
 	{
 		exit(1);
