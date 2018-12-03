@@ -79,8 +79,8 @@ Block createBlock(int num, char hash[65])
 	char title[128];
 	sprintf(title, "%d", num);
 	Block block = {
-		hash,
-		title,
+		(char[])hash,
+		(char[])title,
 		num,
 		time(0)
 	};
