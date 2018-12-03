@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 	if (pid == 0)
 	{
 		//child server
-		(void) server();
+		(void) server(service);
 	}
 	else if (pid > 0)
 	{
