@@ -35,14 +35,14 @@ int main(int argc, char **argv)
 	
 	if (pid > 0)
 	{
-		fprintf(stderr, "Main Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
+		//fprintf(stderr, "Main Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 		//parent
 		(void) server(service);
 		exit(0);
 	}
 	else if (pid == 0)
 	{
-		fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
+		//fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 		//child
 		while (1)
 		{
@@ -63,12 +63,14 @@ int main(int argc, char **argv)
 			}
 			Block block = createBlock(blockcount, buffer);
 			//fprintf(stderr, "Block: %s", block.blockTitle);
-			broadcastBlock(block, hosts, service, numHosts);
+			int s, i
+			s = connectTCP(host, service);
+			broadcastBlock(block, hosts, s, numHosts);
 			/*for (i = 0; i < 1; i++)*/
 			{
 				strcpy(buffer, "0");
 				Transaction trans = createTransaction(transactioncount, blockcount, buffer, id, license);
-				broadcastTransaction(trans, hosts, service, numHosts);
+				broadcastTransaction(trans, hosts, numHosts);
 				transactioncount++;
 			}
 			blockcount++;
