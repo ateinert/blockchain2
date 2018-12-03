@@ -236,7 +236,7 @@ void broadcastTransaction(Transaction trans, char **hosts, char *sock, int numHo
 void saveTransactionToFile(Transaction trans)
 {
 	FILE *file;
-	string s[128];
+	char s[128];
 	sprintf(s, "%d", trans.transactionCount)
 	file = fopen(s, "w");
 	if (file == NULL) 
