@@ -21,12 +21,12 @@ int blockValidate(Block);
 int transactionValidate(Transaction);
 
 Block recieveBlock(int);
-void broadcastBlock(Block, char**, char*);
+void broadcastBlock(Block block, char** hosts, char *sock, int numHosts)
 void saveBlockToFile(Block);
 Block loadBlockFromFile(char*);
 
 Transaction recieveTransaction(int);
-void broadcastTransaction(Transaction, char**, char*);
+void broadcastTransaction(Transaction trans, char **hosts, char *sock, int numHosts)
 void saveTransactionToFile(Transaction);
 Transaction loadTransactionFromFile(char*);
 
