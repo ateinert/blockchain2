@@ -25,13 +25,13 @@ int blockValidate(Block);
 int transactionValidate(Transaction);
 
 Block recieveBlock(int);
-void broadcastBlock(Block block, char** hosts, int s, int numHosts);
-void transmitBlock(Block block, char** hosts, int s, int numHosts);
+void broadcastBlock(Block block, char** hosts, char *service, int numHosts);
+void transmitBlock(Block block, char* host, int s);
 void saveBlockToFile(Block);
 Block loadBlockFromFile(char*);
 
 Transaction recieveTransaction(int);
-void broadcastTransaction(Transaction trans, char **hosts, int s, int numHosts);
+void broadcastTransaction(Transaction trans, char **hosts, char *service, int numHosts);
 void tranmitTransaction(Transaction trans, char *host, int s);
 void saveTransactionToFile(Transaction);
 Transaction loadTransactionFromFile(char*);
