@@ -51,7 +51,7 @@ void server(char *service)
 				(void) close(msock);
 				//fprintf(stderr, "Server Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 				//determine if block or transaction
-				char buffer = null;
+				char buffer = '\0';
 				int cc;
 				cc = read(ssock, &buffer, sizeof(buffer));
 				if (cc < 0)
