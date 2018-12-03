@@ -46,6 +46,8 @@ int main(int argc, char **argv)
 		//child
 		int blockcount = 0;
 		int transactioncount = 0;
+
+		
 		while (1)
 		{
 			printf("Blocks sent: %d\n", blockcount);
