@@ -17,6 +17,9 @@ typedef struct {
 
 void server(char*);
 
+Block createBlock(int, char[65]);
+Transaction createTransaction(int, int, char[65], char[257], char[129]);
+
 int blockValidate(Block);
 int transactionValidate(Transaction);
 
