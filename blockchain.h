@@ -1,7 +1,6 @@
 //blockchain.h
 
 typedef struct {	
-	bool temp;
 	char prevHash[65];
 	char blockTitle[128];
 	long long int blockNumber;
@@ -9,7 +8,6 @@ typedef struct {
 } Block;
 
 typedef struct {
-	bool temp;
 	int transactionCount;
 	char prevHash[65];
 	char ownerKey[257];
