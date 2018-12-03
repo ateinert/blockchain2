@@ -73,7 +73,6 @@ void server(char *service)
 			default:	/* parent */
 				//fprintf(stderr, "Server fork Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 				(void) close(ssock);
-				pause();
 				break;
 			case -1:
 				exit(1);
