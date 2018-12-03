@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 				sha256_file(str, buffer);
 			}
 			Block block = createBlock(blockcount, buffer);
-			fprintf(stderr, "Block: %s", block.blockTitle);
+			//fprintf(stderr, "Block: %s", block.blockTitle);
 			broadcastBlock(block, hosts, service, numHosts);
 			for (i = 0; i < 10; i++)
 			{
