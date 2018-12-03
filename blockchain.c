@@ -165,8 +165,8 @@ void saveBlockToFile(Block block)
 {
 	FILE *file;
 	file = fopen(block.blockTitle, "w");
-	fprintf(stderr, "Block at Save: %s\n, PID: %d, Parent PID: %d", block.blockTitle, getpid(), getppid());
-	//printf("Attempting to save block: %s\n", block.blockTitle);
+	fprintf(stderr, "Block at Save: %s, PID: %d, Parent PID: %d\n", block.blockTitle, getpid(), getppid());
+	//printf("Attempting to save block: %s", block.blockTitle);
 	if (file == NULL)
 	{
 		fprintf(stderr, "\nError opening file1\n"); 
