@@ -252,6 +252,27 @@ Transaction recieveTransaction(int fd)
 		fprintf(stderr, "Valid Transaction Mssg Sent\n");
 		return trans;
 	}
+	/*Block block;
+	char buf[BUFSIZ];
+	char endOfFile_Indicator[]="End of file\n";
+	char validMssg[]="Block Valid\n";
+	int cc;
+	
+	cc = read(fd, &block, sizeof(Block));
+	//printf("recieved: %s, %d\n", buf,cc);
+	if (cc < 0)
+	{
+		exit(1);
+	}
+	if (blockValidate(block))
+	{
+		saveBlockToFile(block);
+		if (write(fd, validMssg, strlen(validMssg)) < 0)
+		{
+			exit(1);
+		}
+		return block;
+	}*/
 }
 
 void transmitTransaction(Transaction trans, char *host, int s)
@@ -259,7 +280,7 @@ void transmitTransaction(Transaction trans, char *host, int s)
 	char buf[LINELEN+1];		/* buffer for one line of text	*/
 	char validMssg[]="Transaction Valid\n";
 	int cc;
-	char header = 'b';
+	char header = 't';
 	fprintf(stderr, "\nSending Header\n");
 	if (write(s, &header, sizeof(header)) < 0)
 	{
@@ -285,6 +306,33 @@ void transmitTransaction(Transaction trans, char *host, int s)
 			break;
 		}
 	}
+	/*	char buf[LINELEN+1];		/buffer for one line of text
+	char validMssg[]="Block Valid\n";
+	int cc;
+	char header = 'b';
+
+	if (write(s, &header, sizeof(header)) < 0)
+	{
+		exit(1);
+	}
+	
+	if (write(s, &block, sizeof(Block)) < 0)
+	{
+		exit(1);
+	}
+	while (cc = read(s, buf, sizeof buf)) 
+	{
+		if (cc < 0)
+		{
+			exit(1);
+		}
+		if(strncmp(buf,validMssg,strlen(validMssg))==0) 
+		{
+			//printf("File Recieved and Verified\n");
+			saveBlockToFile(block);
+			break;
+		}
+	}*/
 }
 
 void broadcastTransaction(Transaction trans, char **hosts, char *service, int numHosts)
