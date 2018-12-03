@@ -48,13 +48,13 @@ void server(char *service)
 		{
 			case 0:		/* child */
 				(void) close(msock);
-				fprintf(stderr, "Child: My PID: %d, Parent PID: %d", getpid(), getppid());
+				fprintf(stderr, "Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 				recieveBlock(ssock);
-				int i = 0;
+				/*int i = 0;
 				for (; i < 10; i++)
 				{
 					recieveTransaction(ssock);
-				}
+				}*/
 				exit(0);
 			default:	/* parent */
 				(void) close(ssock);
