@@ -54,7 +54,10 @@ int main(int argc, char **argv)
 			char buffer[65];
 			strcpy(buffer, "0");
 			if (blockcount > 0)
+			{
+				itoa(buffer, blockcount, 10);
 				sha256_file(itoa(blockcount), buffer);
+			}
 			Block block = createBlock(blockcount, buffer);
 			blockcount++;
 			broadcastBlock(block, hosts, service, numHosts);
