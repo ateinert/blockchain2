@@ -242,11 +242,14 @@ Transaction recieveTransaction(int fd)
 	} 
 	if (transactionValidate(trans))
 	{
+		fprintf(stderr, "Valid Transaction Recieved\n");
 		saveTransactionToFile(trans);
+		fprintf(stderr, "Valid Transaction Saved\n");
 		if (write(fd, validMssg, strlen(validMssg)) < 0)
 		{
 			exit(1);
 		} 
+		fprintf(stderr, "Valid Transaction Mssg Sent\n");
 		return trans;
 	}
 }
