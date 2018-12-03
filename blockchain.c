@@ -51,7 +51,7 @@ void server(char *service)
 				fprintf(stderr, "Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 				recieveBlock(ssock);
 				int i = 0;
-				for (; i < 10; i++)
+				for (; i < 1; i++)
 				{
 					recieveTransaction(ssock);
 				}
