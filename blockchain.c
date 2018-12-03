@@ -49,7 +49,7 @@ void server(char *service)
 		{
 			case 0:		/* child */
 				(void) close(msock);
-				fprintf(stderr, "Server Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
+				fprintf(stderr, "Child: %d Open\n", getpid());
 				//determine if block or transaction
 				char buffer = '\0';
 				int cc;
@@ -67,9 +67,11 @@ void server(char *service)
 				{
 					recieveTransaction(ssock);	
 				}
+				fprintf(stderr, "Child: %d Close\n", getpid());
 				exit(0);
 			default:	/* parent */
 				(void) close(ssock);
+				break;
 			case -1:
 				exit(1);
 		}
