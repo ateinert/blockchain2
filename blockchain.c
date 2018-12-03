@@ -136,6 +136,7 @@ void broadcastBlock(Block block, char** hosts, char *sock, int numHosts)
    	char endoffile[]="End of file\n";
 	int s, i, n, cc;			/* socket descriptor, read count*/
 	int outchars, inchars;	/* characters sent and received	*/
+	fprintf(stderr, "Block: %s", block.blockTitle);
 	char validMssg[]="Block Valid\n";
 	for (i = 0; i < numHosts; i++)
 	{
