@@ -64,8 +64,7 @@ int main(int argc, char **argv)
 			Block block = createBlock(blockcount, buffer);
 			//fprintf(stderr, "Block: %s", block.blockTitle);
 			int s, i;
-			s = connectTCP(host, service);
-			broadcastBlock(block, hosts, s, numHosts);
+			broadcastBlock(block, hosts, service, numHosts);
 			/*for (i = 0; i < 1; i++)
 			{
 				strcpy(buffer, "0");
