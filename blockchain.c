@@ -216,7 +216,7 @@ void broadcastTransaction(Transaction trans, char **hosts, char *sock, int numHo
 void saveTransactionToFile(Transaction trans)
 {
 	FILE *file;
-	file = fopen(trans.transactionTitle, "w");
+	file = fopen(itoa(trans.transactionCount), "w");
 	if (file == NULL) 
 	{ 
 		fprintf(stderr, "\nError opening file\n"); 
@@ -289,6 +289,7 @@ int sha256_file(char *path, char outputBuffer[65])
 	fclose(file);
 	free(buffer);
 	return 0;
+}
 
 void reaper(int sig)
 {
