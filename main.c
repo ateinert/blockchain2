@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 			}
 			Block block = createBlock(blockcount, buffer);
 			broadcastBlock(block, hosts, service, numHosts);
-
+			fprintf(stderr,"Main after block broadcast\n");
 			strcpy(buffer, "0");
 			Transaction trans = createTransaction(transactioncount, blockcount, buffer, id, license);
 			//broadcastTransaction(trans, hosts, service, numHosts);
