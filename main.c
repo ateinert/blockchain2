@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 
 			strcpy(buffer, "0");
 			Transaction trans = createTransaction(transactioncount, blockcount, buffer, id, license);
-			broadcastTransaction(trans, hosts, service, numHosts);
+			//broadcastTransaction(trans, hosts, service, numHosts);
 			transactioncount++;
 			blockcount++;
 		}
