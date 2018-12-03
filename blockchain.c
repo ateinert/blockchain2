@@ -27,7 +27,7 @@ void server(char *service)
 	int msock;;
 	int ssock;
 	int alen;
-	sockaddr_in fsin;
+	struct sockaddr_in fsin;
 	
 	// listen for transaction
 	msock = passiveTCP(service, QLEN);
@@ -52,7 +52,7 @@ void server(char *service)
 				int i = 0;
 				for (; i < 10; i++)
 				{
-					recieveTransaction(ssock)	
+					recieveTransaction(ssock);
 				}
 				exit(0);
 			default:	/* parent */
