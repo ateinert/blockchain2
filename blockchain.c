@@ -66,6 +66,7 @@ void server(char *service)
 					recieveTransaction(ssock);	
 				}
 				exit(0);
+				break;
 			default:	/* parent */
 				(void) close(ssock);
 				break;
