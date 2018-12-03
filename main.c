@@ -35,14 +35,14 @@ int main(int argc, char **argv)
 	
 	if (pid > 0)
 	{
-		fprintf(stderr, "Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
+		fprintf(stderr, "Main Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 		//parent
 		(void) server(service);
 		exit(0);
 	}
 	else if (pid == 0)
 	{
-		fprintf(stderr, "Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
+		fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 		//child
 		while (1)
 		{
