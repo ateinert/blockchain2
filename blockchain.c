@@ -64,6 +64,16 @@ void server(char *service)
 	}
 }
 
+Block createBlock(int, char[65])
+{
+	
+}
+
+Transaction createTransaction(int, int, char[65], char[257], char[129])
+{
+	
+}
+
 Block recieveBlock(int fd)
 {
 	Block block;
