@@ -159,13 +159,14 @@ void transmitBlock(Block block, char* host, int s)
 	}
 }
 
-void broadcastBlock(Block block, char** hosts, int fd, int numHosts)
+void broadcastBlock(Block block, char** hosts, char *service, int numHosts)
 {
-	int i;
+	int i, s;
 	for (i = 0; i < numHosts; i++)
 	{
 		char *host = hosts[i];
-		transmitBlock(block, host, fd);
+		s = connectTCP(host, service);
+		transmitBlock(block, host, s);
 	}
 }
 
@@ -255,12 +256,13 @@ void transmitTransaction(Transaction trans, char *host, int s)
 	}
 }
 
-void broadcastTransaction(Transaction trans, char **hosts, int s, int numHosts)
+void broadcastTransaction(Transaction trans, char **hosts, char *service, int numHosts)
 {
-	int i;
+	int i, s;
 	for (i = 0; i < numHosts; i++)
 	{
 		char *host = hosts[i];
+		s = connectTCP(host, service);
 		transmitTransaction(trans, host, s);
 	}
 }
