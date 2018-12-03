@@ -136,7 +136,6 @@ void broadcastBlock(Block block, char** hosts, char *sock, int numHosts)
    	char endoffile[]="End of file\n";
 	int s, i, n, cc;			/* socket descriptor, read count*/
 	int outchars, inchars;	/* characters sent and received	*/
-	fprintf(stderr, "Block: %s", block.blockTitle);
 	char validMssg[]="Block Valid\n";
 	for (i = 0; i < numHosts; i++)
 	{
@@ -166,10 +165,10 @@ void saveBlockToFile(Block block)
 {
 	FILE *file;
 	file = fopen(block.blockTitle, "w");
+	fprintf(stderr, "Block at Save: %s\n", block.blockTitle);
 	//printf("Attempting to save block: %s\n", block.blockTitle);
 	if (file == NULL)
-	{ 
-		fprintf(stderr,"File: %s\n", block.blockTitle);
+	{
 		fprintf(stderr, "\nError opening file1\n"); 
 		{
 			exit(1);
