@@ -46,7 +46,13 @@ int main(int argc, char **argv)
 		//child
 		int blockcount = 0;
 		int transactioncount = 0;
-
+		
+		int connections[numHosts];
+		int i;
+		for (i = 0, i < numHosts, i++)
+		{
+			connections[i] = connectTCP(hosts[i], service);
+		}
 		
 		while (1)
 		{
@@ -64,11 +70,11 @@ int main(int argc, char **argv)
 				sha256_file(str, buffer);
 			}
 			Block block = createBlock(blockcount, buffer);
-			broadcastBlock(block, hosts, service, numHosts);
-			fprintf(stderr,"Main after block broadcast\n");
+			broadcastBlock(block, connections, numHosts);
+			//fprintf(stderr,"Main after block broadcast\n");
 			strcpy(buffer, "0");
 			Transaction trans = createTransaction(transactioncount, blockcount, buffer, id, license);
-			//broadcastTransaction(trans, hosts, service, numHosts);
+			//broadcastTransaction(trans, connections, numHosts);
 			transactioncount++;
 			blockcount++;
 		}
