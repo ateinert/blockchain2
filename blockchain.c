@@ -49,7 +49,7 @@ void client(char** hosts, char *service, const int numHosts)
 		printf("Press ENTER to send a block and publish transactions\n");
 		int pubCount;
 		printf("Enter how many transactions you wish to generate: ");
-		scanf("%d", pubCount);
+		scanf("%d", &pubCount);
 		//loadBlockCount();
 		//loadTransactionsCount();
 		fflush(stdout);
