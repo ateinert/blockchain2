@@ -34,11 +34,11 @@ void server(char *service)
 	(void) signal(SIGCHLD, reaper);
 	while (1)
 	{
-		fprintf(stderr, "Server Parent: My PID: %d\n", getpid());
+		//fprintf(stderr, "Server Parent: My PID: %d\n", getpid());
 		alen = sizeof(fsin);
-		fprintf(stderr, "Server Parent Before Accept\n");
+		//fprintf(stderr, "Server Parent Before Accept\n");
 		ssock = accept(msock, (struct sockaddr *)&fsin, &alen);
-		fprintf(stderr, "Server Parent After Accept, ssock: %d\n", ssock);
+		//fprintf(stderr, "Server Parent After Accept, ssock: %d\n", ssock);
 		if (ssock < 0) 
 		{
 			if (errno == EINTR)   //system call was interrupted permaturely with a signal before it was able to complete
@@ -58,7 +58,7 @@ void server(char *service)
 					{
 						exit(1);
 					}
-					fprintf(stderr, "Header: %c\n", buffer);
+					//fprintf(stderr, "Header: %c\n", buffer);
 					if (buffer == 'b')
 					{
 						recieveBlock(ssock);
@@ -135,7 +135,7 @@ Block recieveBlock(int fd)
 	{
 		exit(1);
 	}
-	fprintf(stderr,"Block recieved\n");
+	//fprintf(stderr,"Block recieved\n");
 	if (blockValidate(block))
 	{
 		saveBlockToFile(block);
@@ -143,7 +143,7 @@ Block recieveBlock(int fd)
 		{
 			exit(1);
 		}
-		fprintf(stderr,"Block verified\n");
+		//fprintf(stderr,"Block verified\n");
 		return block;
 	}
 	
@@ -160,12 +160,12 @@ void transmitBlock(Block block, int s)
 	{
 		exit(1);
 	}
-	fprintf(stderr,"Header Sent\n");
+	//fprintf(stderr,"Header Sent\n");
 	if (write(s, &block, sizeof(Block)) < 0)
 	{
 		exit(1);
 	}
-	fprintf(stderr,"Block Sent\n");
+	//fprintf(stderr,"Block Sent\n");
 	while (cc = read(s, buf, sizeof buf)) 
 	{
 		if (cc < 0)
@@ -197,7 +197,7 @@ void saveBlockToFile(Block block)
 	file = fopen(block.blockTitle, "w");
 	if (file == NULL)
 	{
-		fprintf(stderr, "\nError opening file1\n"); 
+		//fprintf(stderr, "\nError opening file1\n"); 
 		{
 			exit(1);
 		} 
@@ -208,7 +208,7 @@ void saveBlockToFile(Block block)
 		exit (1);
 	}
 	fclose(file);
-	fprintf(stderr,"Block saved to file\n");
+	//fprintf(stderr,"Block saved to file\n");
 }
 
 Block loadBlockFromFile(char *str)
@@ -218,7 +218,7 @@ Block loadBlockFromFile(char *str)
 	file = fopen(str, "r");
 	if (file == NULL) 
 	{ 
-		fprintf(stderr, "\nError opening file2\n"); 
+		//fprintf(stderr, "\nError opening file2\n"); 
 		exit (1); 
 	}
 	while(fread(&block, sizeof(Block), 1, file));
@@ -239,7 +239,7 @@ Transaction recieveTransaction(int fd)
 	{
 		exit(1);
 	}
-	fprintf(stderr,"Transaction Recieved\n");
+	//fprintf(stderr,"Transaction Recieved\n");
 	if (transactionValidate(trans))
 	{
 		saveTransactionToFile(trans);
@@ -247,7 +247,7 @@ Transaction recieveTransaction(int fd)
 		{
 			exit(1);
 		} 
-		fprintf(stderr,"Transaction Verified\n");
+		//fprintf(stderr,"Transaction Verified\n");
 		return trans;
 	}
 }
@@ -262,12 +262,12 @@ void transmitTransaction(Transaction trans, int s)
 	{
 		exit(1);
 	}
-	fprintf(stderr,"Header Sent\n");
+	//fprintf(stderr,"Header Sent\n");
 	if (write(s, &trans, sizeof(Transaction)) < 0)
 	{
 		exit(1);
 	} 
-	fprintf(stderr,"Transaction Sent\n");
+	//fprintf(stderr,"Transaction Sent\n");
 	while (cc = read(s, buf, sizeof buf)) 
 	{
 		if (cc < 0)
@@ -300,7 +300,7 @@ void saveTransactionToFile(Transaction trans)
 	file = fopen(s, "w");
 	if (file == NULL) 
 	{ 
-		fprintf(stderr, "\nError opening file3\n"); 
+		//fprintf(stderr, "\nError opening file3\n"); 
 		{
 			exit(1);
 		} 
@@ -312,7 +312,7 @@ void saveTransactionToFile(Transaction trans)
 		exit (1);
 	}
 	fclose(file);
-	fprintf(stderr,"Transaction saved to file\n");
+	//fprintf(stderr,"Transaction saved to file\n");
 }
 
 Transaction loadTransactionFromFile(char *str)
@@ -322,7 +322,7 @@ Transaction loadTransactionFromFile(char *str)
 	file = fopen(str, "r");
 	if (file == NULL) 
 	{ 
-		fprintf(stderr, "\nError opening file4\n"); 
+		//fprintf(stderr, "\nError opening file4\n"); 
 		exit (1); 
 	}
 	while(fread(&trans, sizeof(Transaction), 1, file));
