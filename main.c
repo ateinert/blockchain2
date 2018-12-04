@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 		
 		int connections[numHosts];
 		int i;
-		for (i = 0, i < numHosts, i++)
+		for (i = 0; i < numHosts; i++)
 		{
 			connections[i] = connectTCP(hosts[i], service);
 		}
