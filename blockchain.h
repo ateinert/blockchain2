@@ -16,28 +16,40 @@ typedef struct {
 	time_t creationTime;
 } Transaction;
 
-void server(char*);
+void server(char*);					
+void client(char** hosts, char service, const int numHosts);
 
+int passiveTCP(const char*, int);
+int connectTCP(const char*, const char*);
+
+void updateWallet();
+int loadWallet();
+
+void sell(Transaction trans); 			// client: sends a transaction for sale to other nodes, gets added to list of buyable stuff;
+void saleIntent(Transaction); 			// server: recieves intent to sell
+void seeForSale(); 						// all: loads the for sale list to UI
+void buy(Transaction trans, char*host); // client: sends intent to buy to owner host, host recieves this, then generates and buys new block
+void transmitSold(); 					// server: recieves intent to buy and generates and sells new transaction in the owners name.
+
+void updateBlockCount(int);
+int loadBlockCount();
 Block createBlock(int, char[65]);
 Transaction createTransaction(int, int, char[65], char[257], char[129]);
-
-int blockValidate(Block);
-int transactionValidate(Transaction);
-
 Block recieveBlock(int);
 void broadcastBlock(Block block, int connections[], int numHosts);
 void transmitBlock(Block block, int s);
 void saveBlockToFile(Block);
 Block loadBlockFromFile(char*);
+int blockValidate(Block);
 
+void updateTransactionCount(int);
+int loadTransactionCount();
 Transaction recieveTransaction(int);
 void broadcastTransaction(Transaction trans, int connections[], int numHosts);
 void tranmitTransaction(Transaction trans, int s);
 void saveTransactionToFile(Transaction);
 Transaction loadTransactionFromFile(char*);
-
-int passiveTCP(const char*, int);
-int connectTCP(const char*, const char*);
+int transactionValidate(Transaction);
 
 void sha256(char *string, char outputBuffer[65]);
 int sha256_file(char *path, char outputBuffer[65]);

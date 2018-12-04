@@ -22,6 +22,50 @@
 #define TRANSACTION_PORT "2001"
 #define QLEN 5
 
+extern int blockcount;
+extern int transactioncount;
+
+void client(char** hosts, char service, const int numHosts)
+{
+	//fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
+	//child
+	
+	printf("Press ENTER once ready to start\n");
+	getchar();
+	
+	int connections[numHosts];
+	int i;
+	for (i = 0; i < numHosts; i++)
+	{
+		connections[i] = connectTCP(hosts[i], service);
+	}
+	
+	while (1)
+	{
+		printf("Blocks sent: %d\n", blockcount);
+		printf("Transactions sent: %d\n", transactioncount);
+		printf("Press ENTER to send a block and 10 transactions\n");
+		fflush(stdout);
+		getchar();
+		char buffer[65];
+		strcpy(buffer, "0");
+		if (blockcount > 0)
+		{
+			char str[129];
+			sprintf(str, "%d", blockcount - 1);
+			sha256_file(str, buffer);
+		}
+		Block block = createBlock(blockcount, buffer);
+		//broadcastBlock(block, connections, numHosts);
+		//fprintf(stderr,"Main after block broadcast\n");
+		strcpy(buffer, "0");
+		Transaction trans = createTransaction(transactioncount, blockcount, buffer, id, license);
+		broadcastTransaction(trans, connections, numHosts);
+		transactioncount++;
+		blockcount++;
+	}
+}
+
 void server(char *service)
 {
 	int msock;
