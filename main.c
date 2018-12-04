@@ -10,18 +10,33 @@
 #include <string.h>
 #include "blockchain.h"
 
+int blockCount;
+int transactionCount;
+const char* id;
+const char* license;
+
 int main(int argc, char **argv)
 {
-	char id[] = "7kzf5fl8dX7lsUfUDSvCcBeAoUVZyfWefr02SzYVkXWjsgDWCRJgHeCAoCkUqRuLK0N5fQLG7fqimZwBLAL40hYCaFwNbjmB1KlNPtm8pwQDSehXzgAPKFPaqPR8KFJDTLcxzSwseZ2fsBHbzZgpud909z2yA5u8kkM9HEAYB7Au7YzMAl9WWAdRkK0ESZwF70RGBdNkOASOx2okb29SVnNDOqG7t7B5LqveNfRtJRqkcHYNlUnsymES3DGnfi6p";
-	char license[] = "VrGNpz87DHaYlp97cWS7JFpxlRNruIw9xPGWRfrzHznzwDzw0YB8d4SiEzzI3ewwbGSVUk6aUu66E4olapwvmHuBeg6kBItcuEljq6kFPEuykvaQ0BjmaXCVDwOAkdaK";
+	//initialize the blockCount and TransactionCount
+	blockCount = 0;
+	transactionCount = 0;
 
-	//chdir("cd ~/.blockchain");
+	// may load from file
+	id = "7kzf5fl8dX7lsUfUDSvCcBeAoUVZyfWefr02SzYVkXWjsgDWCRJgHeCAoCkUqRuLK0N5fQLG7fqimZwBLAL40hYCaFwNbjmB1KlNPtm8pwQDSehXzgAPKFPaqPR8KFJDTLcxzSwseZ2fsBHbzZgpud909z2yA5u8kkM9HEAYB7Au7YzMAl9WWAdRkK0ESZwF70RGBdNkOASOx2okb29SVnNDOqG7t7B5LqveNfRtJRqkcHYNlUnsymES3DGnfi6p";
+	license = "VrGNpz87DHaYlp97cWS7JFpxlRNruIw9xPGWRfrzHznzwDzw0YB8d4SiEzzI3ewwbGSVUk6aUu66E4olapwvmHuBeg6kBItcuEljq6kFPEuykvaQ0BjmaXCVDwOAkdaK";
+
+	// determine the number of inputs is right
 	if (argc < 3)
 	{
-		exit(1);	
+		frpintf(stderr, "Usage: ./blockchain <service> <host(s)>\n");
+		exit(EXIT_FAILURE);	
 	}
+
+	// intialize the service;
 	char *service = argv[1];
 	const int numHosts = argc - 2;
+
+	// get all of the hosts
 	char *hosts[numHosts];
 	int i;
 	for (i = 0; i < numHosts; i++)
@@ -29,25 +44,30 @@ int main(int argc, char **argv)
 		hosts[i] = argv[i + 2];
 	}
 	
-	
+
+	//reaper
 	(void) signal(SIGCHLD, reaper);
+
+	//fork
 	int pid = fork();
-	
 	if (pid > 0)
 	{
+		//parent process
+
 		//fprintf(stderr, "Main Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
-		//parent
 		(void) server(service);
 		exit(0);
 	}
 	else if (pid == 0)
 	{
+		//child process
+
 		(void) client(hosts, service, numHosts);
 		exit(0);
  	}
 	else
 	{
-		
+		fprintf(stderr, "Fork Error\n");
 		exit(EXIT_FAILURE);
 	}
 	return 0;
