@@ -186,7 +186,7 @@ void broadcastBlock(Block block, int connections[], int numHosts)
 	int i, s;
 	for (i = 0; i < numHosts; i++)
 	{
-		fprintf(stderr, "Connecting to host: %s, service: %s\n", host, service);
+		//fprintf(stderr, "Connecting to host: %s, service: %s\n", host, service);
 		transmitBlock(block, connections[i]);
 	}
 }
@@ -288,7 +288,7 @@ void broadcastTransaction(Transaction trans, int connections[], int numHosts)
 	int i, s;
 	for (i = 0; i < numHosts; i++)
 	{
-		transmitTransaction(trans, connections[i], s);
+		transmitTransaction(trans, connections[i]);
 	}
 }
 
