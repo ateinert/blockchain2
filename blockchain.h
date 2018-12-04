@@ -17,7 +17,7 @@ typedef struct {
 } Transaction;
 
 void server(char*);					
-void client(char** hosts, char service, const int numHosts);
+void client(char** hosts, char *service, const int numHosts);
 
 int passiveTCP(const char*, int);
 int connectTCP(const char*, const char*);

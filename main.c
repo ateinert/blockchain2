@@ -12,12 +12,12 @@
 
 int blockCount;
 int transactionCount;
-const char* id;
-const char* license;
+char* id;
+char* license;
 
 int main(int argc, char **argv)
 {
-	//initialize the blockCount and TransactionCount
+	//initialize the blockCount and transactionCount
 	blockCount = 0;
 	transactionCount = 0;
 
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 	// determine the number of inputs is right
 	if (argc < 3)
 	{
-		frpintf(stderr, "Usage: ./blockchain <service> <host(s)>\n");
+		fprintf(stderr, "Usage: ./blockchain <service> <host(s)>\n");
 		exit(EXIT_FAILURE);	
 	}
 

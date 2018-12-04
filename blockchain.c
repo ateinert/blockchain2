@@ -22,12 +22,12 @@
 #define TRANSACTION_PORT "2001"
 #define QLEN 5
 
-extern int blockcount;
-extern int transactioncount;
-extern const char* id;
-extern const char* license;
+extern int blockCount;
+extern int transactionCount;
+extern char* id;
+extern char* license;
 
-void client(char** hosts, char service, const int numHosts)
+void client(char** hosts, char *service, const int numHosts)
 {
 	//fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 	//child
@@ -44,27 +44,27 @@ void client(char** hosts, char service, const int numHosts)
 	
 	while (1)
 	{
-		printf("Blocks sent: %d\n", blockcount);
-		printf("Transactions sent: %d\n", transactioncount);
+		printf("Blocks sent: %d\n",	blockCount);
+		printf("Transactions sent: %d\n", transactionCount);
 		printf("Press ENTER to send a block and 10 transactions\n");
 		fflush(stdout);
 		getchar();
 		char buffer[65];
 		strcpy(buffer, "0");
-		if (blockcount > 0)
+		if (blockCount > 0)
 		{
 			char str[129];
-			sprintf(str, "%d", blockcount - 1);
+			sprintf(str, "%d", blockCount - 1);
 			sha256_file(str, buffer);
 		}
-		Block block = createBlock(blockcount, buffer);
+		Block block = createBlock(blockCount, buffer);
 		//broadcastBlock(block, connections, numHosts);
 		//fprintf(stderr,"Main after block broadcast\n");
 		strcpy(buffer, "0");
-		Transaction trans = createTransaction(transactioncount, blockcount, buffer, id, license);
+		Transaction trans = createTransaction(transactionCount, blockCount, buffer, id, license);
 		broadcastTransaction(trans, connections, numHosts);
-		transactioncount++;
-		blockcount++;
+		transactionCount++;
+		blockCount++;
 	}
 }
 
