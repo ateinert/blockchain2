@@ -49,27 +49,29 @@ void server(char *service)
 		{
 			case 0:		/* child */
 				(void) close(msock);
-				fprintf(stderr, "Server Child: My PID: %d,Parent PID:%d\n", getpid(), getppid());
-				//determine if block or transaction
-				char buffer = '\0';
-				int cc;
-				cc = read(ssock, &buffer, sizeof(buffer));
-				if (cc < 0)
+				while (1)
 				{
-					exit(1);
+					char buffer = '\0';
+					int cc;
+					cc = read(ssock, &buffer, sizeof(buffer));
+					if (cc < 0)
+					{
+						exit(1);
+					}
+					fprintf(stderr, "Header: %c\n", buffer);
+					if (buffer == 'b')
+					{
+						recieveBlock(ssock);
+					}
+					else if (buffer == 't')
+					{
+						recieveTransaction(ssock);	
+					}
+					else
+					{
+						break;	
+					}
 				}
-				fprintf(stderr, "Header: %c\n", buffer);
-				if (buffer == 'b')
-				{
-					fprintf(stderr,"Recieve Block: Function Start\n");
-					recieveBlock(ssock);
-					fprintf(stderr,"Recieve Block: Function End\n");
-				}
-				else if (buffer == 't')
-				{
-					recieveTransaction(ssock);	
-				}
-				fprintf(stderr,"Server Child: %d close\n", getpid());
 				exit(0);
 			default:	/* parent */
 				(void) close(ssock);
@@ -147,7 +149,7 @@ Block recieveBlock(int fd)
 	
 }
 
-void transmitBlock(Block block, char* host, int s)
+void transmitBlock(Block block, int s)
 {
 	char buf[LINELEN+1];		/* buffer for one line of text	*/
 	char validMssg[]="Block Valid\n";
@@ -179,15 +181,13 @@ void transmitBlock(Block block, char* host, int s)
 	}
 }
 
-void broadcastBlock(Block block, char** hosts, char *service, int numHosts)
+void broadcastBlock(Block block, int connections[], int numHosts)
 {
 	int i, s;
 	for (i = 0; i < numHosts; i++)
 	{
-		char *host = hosts[i];
 		fprintf(stderr, "Connecting to host: %s, service: %s\n", host, service);
-		s = connectTCP(host, service);
-		transmitBlock(block, host, s);
+		transmitBlock(block, connections[i]);
 	}
 }
 
@@ -252,7 +252,7 @@ Transaction recieveTransaction(int fd)
 	}
 }
 
-void transmitTransaction(Transaction trans, char *host, int s)
+void transmitTransaction(Transaction trans, int s)
 {
 	char buf[LINELEN+1];		/* buffer for one line of text	*/
 	char validMssg[]="Transaction Valid\n";
@@ -283,14 +283,12 @@ void transmitTransaction(Transaction trans, char *host, int s)
 	}
 }
 
-void broadcastTransaction(Transaction trans, char **hosts, char *service, int numHosts)
+void broadcastTransaction(Transaction trans, int connections[], int numHosts)
 {
 	int i, s;
 	for (i = 0; i < numHosts; i++)
 	{
-		char *host = hosts[i];
-		s = connectTCP(host, service);
-		transmitTransaction(trans, host, s);
+		transmitTransaction(trans, connections[i], s);
 	}
 }
 
