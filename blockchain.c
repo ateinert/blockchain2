@@ -53,7 +53,7 @@ void client(char** hosts, char *service, const int numHosts)
 		fflush(stdout);
 		getchar();
 		printf("Enter how many transactions you wish to generate: ");
-		scanf("%d", &pubCount);
+		scanf(" %d", &pubCount);
 		char buffer[65];
 		strcpy(buffer, "0");
 		if (blockCount > 0)
