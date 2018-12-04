@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 			//fprintf(stderr,"Main after block broadcast\n");
 			strcpy(buffer, "0");
 			Transaction trans = createTransaction(transactioncount, blockcount, buffer, id, license);
-			//broadcastTransaction(trans, connections, numHosts);
+			broadcastTransaction(trans, connections, numHosts);
 			transactioncount++;
 			blockcount++;
 		}
