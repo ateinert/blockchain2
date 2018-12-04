@@ -35,6 +35,9 @@ void client(char** hosts, char *service, const int numHosts)
 	printf("Press ENTER once ready to start\n");
 	getchar();
 	
+	//while (1)
+	//spawn a child for the client
+	// this new child will create connections, send and die
 	int connections[numHosts];
 	int i;
 	for (i = 0; i < numHosts; i++)
@@ -78,7 +81,8 @@ void client(char** hosts, char *service, const int numHosts)
 		//updateBlockCount(blockCount);
 	}
 	//broadcastEnd();
-
+	//exit()
+	//}
 }
 
 void server(char *service)

@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 	else if (pid == 0)
 	{
 		//child process
-
+		
 		(void) client(hosts, service, numHosts);
 		exit(0);
  	}
