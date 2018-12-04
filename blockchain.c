@@ -16,7 +16,7 @@
 #include <errno.h>
 #include <openssl/sha.h>
 #include "blockchain.h"
-
+//test 
 #define LINELEN 128
 #define BLOCK_PORT "2000"
 #define TRANSACTION_PORT "2001"
