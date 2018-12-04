@@ -47,6 +47,9 @@ int main(int argc, char **argv)
 		int blockcount = 0;
 		int transactioncount = 0;
 		
+		printf("Press ENTER once ready to start\n");
+		getchar();
+		
 		int connections[numHosts];
 		int i;
 		for (i = 0; i < numHosts; i++)
