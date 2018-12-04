@@ -77,6 +77,8 @@ void client(char** hosts, char *service, const int numHosts)
 		blockCount++;
 		//updateBlockCount(blockCount);
 	}
+	//broadcastEnd();
+
 }
 
 void server(char *service)
