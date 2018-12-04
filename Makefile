@@ -1,6 +1,6 @@
 CXX=gcc
 #INCS= -I. -I/usr/include # to use HPUX with gcc
-OBJECTS= block.c transaction.c sha256.c connectTCP.c connectsock.c passivesock.c passiveTCP.c errexit.c
+OBJECTS= blockchain.c connectTCP.c connectsock.c passivesock.c passiveTCP.c errexit.c
 OPT = -lssl -lcrypto
 
 .SUFFIXES: .c
