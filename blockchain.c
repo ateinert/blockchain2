@@ -46,7 +46,12 @@ void client(char** hosts, char *service, const int numHosts)
 	{
 		printf("Blocks sent: %d\n",	blockCount);
 		printf("Transactions sent: %d\n", transactionCount);
-		printf("Press ENTER to send a block and 10 transactions\n");
+		printf("Press ENTER to send a block and publish transactions\n");
+		int pubCount;
+		printf("Enter how many transactions you wish to generate: ");
+		scanf("%d", pubCount);
+		//loadBlockCount();
+		//loadTransactionsCount();
 		fflush(stdout);
 		getchar();
 		char buffer[65];
@@ -58,13 +63,18 @@ void client(char** hosts, char *service, const int numHosts)
 			sha256_file(str, buffer);
 		}
 		Block block = createBlock(blockCount, buffer);
-		//broadcastBlock(block, connections, numHosts);
+		broadcastBlock(block, connections, numHosts);
 		//fprintf(stderr,"Main after block broadcast\n");
 		strcpy(buffer, "0");
-		Transaction trans = createTransaction(transactionCount, blockCount, buffer, id, license);
-		broadcastTransaction(trans, connections, numHosts);
-		transactionCount++;
+		for (i = 0; i < pubCount; i++)
+		{
+			Transaction trans = createTransaction(transactionCount, blockCount, buffer, id, license);
+			//broadcastTransaction(trans, connections, numHosts);
+			transactionCount++;
+			//updateTransactionCount(transactionCount);
+		}
 		blockCount++;
+		//updateBlockCount(blockCount);
 	}
 }
 
