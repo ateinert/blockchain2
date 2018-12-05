@@ -35,6 +35,7 @@ void client(char** hosts, char *service, const int numHosts)
 	getchar();
 	while (1)
 	{
+		sleep(1);
 		int connections[numHosts];
 		int i;
 		for (i = 0; i < numHosts; i++)
@@ -61,7 +62,8 @@ void client(char** hosts, char *service, const int numHosts)
 		strcpy(buffer, "0");
 		Transaction trans = createTransaction(blockCount, transactionCount, buffer, id, license);
 		broadcastTransaction(trans, connections, numHosts);
-		
+		transactionCount++;
+
 		blockCount++;
 		//updateBlockCount(blockCount);
 		char EXIT = 'e';
