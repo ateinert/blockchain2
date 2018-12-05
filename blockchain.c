@@ -20,7 +20,7 @@
 #define LINELEN 128
 #define BLOCK_PORT "2000"
 #define TRANSACTION_PORT "2001"
-#define QLEN 5
+#define QLEN 10
 
 extern int blockCount;
 extern int transactionCount;
@@ -36,9 +36,9 @@ void client(char** hosts, char *service, const int numHosts)
 		printf("Press ENTER once ready to start\n");
 		getchar();
 
-		//while (1)
-		//spawn a child for the client
-		// this new child will create connections, send and die
+	//while (1)
+	//spawn a child for the client
+	// this new child will create connections, send and die
 
 		int connections[numHosts];
 		int i;
@@ -46,10 +46,10 @@ void client(char** hosts, char *service, const int numHosts)
 		{
 			connections[i] = connectTCP(hosts[i], service);
 		}
-
 		printf("Blocks sent: %d\n",	blockCount);
 		printf("Transactions sent: %d\n", transactionCount);
 		printf("Press ENTER to send a block and publish transactions\n");
+
 		int pubCount;
 		//loadBlockCount();
 		//loadTransactionsCount();
@@ -58,6 +58,7 @@ void client(char** hosts, char *service, const int numHosts)
 		printf("Enter how many transactions you wish to generate: ");
 		scanf(" %d", &pubCount);
 		getchar();
+
 		char buffer[65];
 		strcpy(buffer, "0");
 		if (blockCount > 0)
@@ -66,27 +67,33 @@ void client(char** hosts, char *service, const int numHosts)
 			sprintf(str, "%d", blockCount - 1);
 			sha256_file(str, buffer);
 		}
+
 		Block block = createBlock(blockCount, buffer);
+		fprintf(stderr,"before block broadcast\n");
 		broadcastBlock(block, connections, numHosts);
-		//fprintf(stderr,"Main after block broadcast\n");
+		fprintf(stderr,"after block broadcast\n");
 		strcpy(buffer, "0");
+
 		for (i = 0; i < pubCount; i++)
 		{
 			Transaction trans = createTransaction(blockCount, transactionCount, buffer, id, license);
+			fprintf(stderr,"before transaction broadcast\n");
 			broadcastTransaction(trans, connections, numHosts);
+			fprintf(stderr,"after transaction broadcast\n");
 			transactionCount++;
 			//updateTransactionCount(transactionCount);
 		}
 		blockCount++;
-		//updateBlockCount(blockCount);
-		
 		//close the sockets?
+
+	//updateBlockCount(blockCount);
+		char EXIT = 'e';
 		for (i = 0; i < numHosts; i++)
 		{
 			close(connections[i]);
 		}
-	}
 	//broadcastEnd();
+	}
 	//exit()
 	//}
 }
@@ -100,14 +107,12 @@ void server(char *service)
 	
 	// listen for transaction
 	msock = passiveTCP(service, QLEN);
-	(void) signal(SIGCHLD, reaper);
+	//(void) signal(SIGCHLD, reaper);
 	while (1)
 	{
-		//fprintf(stderr, "Server Parent: My PID: %d\n", getpid());
+		fprintf(stderr, "Server Parent: My PID: %d\n", getpid());
 		alen = sizeof(fsin);
-		//fprintf(stderr, "Server Parent Before Accept\n");
 		ssock = accept(msock, (struct sockaddr *)&fsin, &alen);
-		//fprintf(stderr, "Server Parent After Accept, ssock: %d\n", ssock);
 		if (ssock < 0) 
 		{
 			if (errno == EINTR)   //system call was interrupted permaturely with a signal before it was able to complete
@@ -122,26 +127,25 @@ void server(char *service)
 				{
 					char buffer = '\0';
 					int cc;
-					cc = read(ssock, &buffer, sizeof(buffer));
-					if (cc < 0)
+					while(cc = read(ssock, &buffer, sizeof(buffer)))
 					{
-						exit(1);
-					}
-					//fprintf(stderr, "Header: %c\n", buffer);
-					if (buffer == 'b')
-					{
-						recieveBlock(ssock);
-					}
-					else if (buffer == 't')
-					{
-						recieveTransaction(ssock);	
-					}
-					else
-					{
-						break;	
+						if (cc < 0)
+						{
+							exit(1);
+						}
+						//fprintf(stderr, "Header: %c\n", buffer);
+						if (buffer == 'b')
+						{
+							recieveBlock(ssock);
+						}
+						else if (buffer == 't')
+						{
+							recieveTransaction(ssock);
+						}
+						exit(0);
 					}
 				}
-				exit(0);
+				break;
 			default:	/* parent */
 				(void) close(ssock);
 				break;
@@ -228,11 +232,13 @@ void transmitBlock(Block block, int s)
 
 	if (write(s, &header, sizeof(header)) < 0)
 	{
+		fprintf(stderr, "Header send failure\n");
 		exit(1);
 	}
 	//fprintf(stderr,"Header Sent\n");
 	if (write(s, &block, sizeof(Block)) < 0)
 	{
+		fprintf(stderr, "Transaction send failure\n");
 		exit(1);
 	}
 	//fprintf(stderr,"Block Sent\n");
@@ -332,11 +338,13 @@ void transmitTransaction(Transaction trans, int s)
 	char header = 't';
 	if (write(s, &header, sizeof(header)) < 0)
 	{
+		fprintf(stderr, "Header send failure\n");
 		exit(1);
 	}
 	//fprintf(stderr,"Header Sent\n");
 	if (write(s, &trans, sizeof(Transaction)) < 0)
 	{
+		fprintf(stderr, "Transaction send failure\n");
 		exit(1);
 	} 
 	//fprintf(stderr,"Transaction Sent\n");
