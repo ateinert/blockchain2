@@ -32,19 +32,21 @@ void client(char** hosts, char *service, const int numHosts)
 	//fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 	//child
 	
+	//child of child
 	printf("Press ENTER once ready to start\n");
 	getchar();
-	
+
 	//while (1)
 	//spawn a child for the client
 	// this new child will create connections, send and die
+
 	int connections[numHosts];
 	int i;
 	for (i = 0; i < numHosts; i++)
 	{
 		connections[i] = connectTCP(hosts[i], service);
 	}
-	
+
 	while (1)
 	{
 		printf("Blocks sent: %d\n",	blockCount);
@@ -79,7 +81,12 @@ void client(char** hosts, char *service, const int numHosts)
 		}
 		blockCount++;
 		//updateBlockCount(blockCount);
-		exit(0);
+		
+		//close the sockets?
+		for (i = 0; i < numHosts; i++)
+		{
+			close(connections[i]);
+		}
 	}
 	//broadcastEnd();
 	//exit()
