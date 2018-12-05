@@ -38,13 +38,14 @@ void client(char** hosts, char *service, const int numHosts)
 	//child
 	printf("Enter something to start\n");
 	fflush(stdout);
-	char *rand;
+	char rand[128];
 	scanf("%s", rand);
 	while (1)
 	{
+
 		printf("\nBlocks sent: %d\n",	blockCount);
 		printf("Transactions sent: %d\n", transactionCount);
-		char *s;
+		char s[128];
 		printf("\nType \"publish\" to Send a Block and Transactions\n");
 		printf("Type \"buy\" to See a List of Buyable transactions and purchase one\n");
 		//if (strcpm(s, "publish"))
