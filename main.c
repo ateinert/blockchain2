@@ -49,6 +49,8 @@ int main(int argc, char **argv)
 	(void) signal(SIGCHLD, reaper);
 
 	//fork
+	printf("Fork");
+	fflush(stdout);
 	int pid = fork();
 	if (pid > 0)
 	{

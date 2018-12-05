@@ -27,16 +27,21 @@ extern int transactionCount;
 extern char* id;
 extern char* license;
 
+
 void client(char** hosts, char *service, const int numHosts)
 {
 	fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 	//child
 	printf("Press ENTER once ready to start\n");
+	fflush(stdout);
 	getchar();
 	while (1)
 	{
+		printf("\nBlocks sent: %d\n",	blockCount);
+		printf("Transactions sent: %d\n", transactionCount);
 		char *s;
-		printf("Type \"publish\" to Send a Block and Transactions\n");
+		printf("\nType \"publish\" to Send a Block and Transactions\n");
+		printf("Type \"buy\" to See a List of Buyable transactions and purchase one\n");
 		scanf("%s", s);
 		//if (strcpm(s, "publish"))
 		int connections[numHosts];
@@ -45,36 +50,40 @@ void client(char** hosts, char *service, const int numHosts)
 		{
 			connections[i] = connectTCP(hosts[i], service);
 		}
-
-		printf("Blocks sent: %d\n",	blockCount);
-		printf("Transactions sent: %d\n", transactionCount);
 		//loadBlockCount();
 		//loadTransactionsCount();
+
 		char buffer[65];
-		strcpy(buffer, "0");
-		if (blockCount > 0)
+		if (strcmp(s, "publish") == 0)
 		{
-			char str[129];
-			sprintf(str, "%d", blockCount - 1);
-			sha256_file(str, buffer);
-		}
+			strcpy(buffer, "0");
+			if (blockCount > 0)
+			{
+				char str[129];
+				sprintf(str, "%d", blockCount - 1);
+				sha256_file(str, buffer);
+			}
 
-		Block block = createBlock(blockCount, buffer);
-		broadcastBlock(block, connections, numHosts);
-		
-		strcpy(buffer, "0");
-		Transaction trans = createTransaction(blockCount, transactionCount, buffer, id, license);
-		broadcastTransaction(trans, connections, numHosts);
-		transactionCount++;
+			Block block = createBlock(blockCount, buffer);
+			broadcastBlock(block, connections, numHosts);
+			strcpy(buffer, "0");
+			Transaction trans = createTransaction(blockCount, transactionCount, buffer, id, license);
+			broadcastTransaction(trans, connections, numHosts);
+			transactionCount++;
+			blockCount++;
+		}/*
+		else if (strcmp(s, "buy"))
+		{
+			//implement buying
+		}*/
 
-		blockCount++;
 		//updateBlockCount(blockCount);
-		char EXIT = 'e';
 		for (i = 0; i < numHosts; i++)
 		{
 			close(connections[i]);
 		}
 	}
+
 }
 
 void server(char *service)
