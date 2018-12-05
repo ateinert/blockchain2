@@ -29,36 +29,23 @@ extern char* license;
 
 void client(char** hosts, char *service, const int numHosts)
 {
-	//fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
+	fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 	//child
+	printf("Press ENTER once ready to start\n");
+	getchar();
 	while (1)
 	{
-		printf("Press ENTER once ready to start\n");
-		getchar();
-
-	//while (1)
-	//spawn a child for the client
-	// this new child will create connections, send and die
-
 		int connections[numHosts];
 		int i;
 		for (i = 0; i < numHosts; i++)
 		{
 			connections[i] = connectTCP(hosts[i], service);
 		}
+
 		printf("Blocks sent: %d\n",	blockCount);
 		printf("Transactions sent: %d\n", transactionCount);
-		printf("Press ENTER to send a block and publish transactions\n");
-
-		int pubCount;
 		//loadBlockCount();
 		//loadTransactionsCount();
-		fflush(stdout);
-		getchar();
-		printf("Enter how many transactions you wish to generate: ");
-		scanf(" %d", &pubCount);
-		getchar();
-
 		char buffer[65];
 		strcpy(buffer, "0");
 		if (blockCount > 0)
@@ -69,33 +56,16 @@ void client(char** hosts, char *service, const int numHosts)
 		}
 
 		Block block = createBlock(blockCount, buffer);
-		fprintf(stderr,"before block broadcast\n");
 		broadcastBlock(block, connections, numHosts);
-		fprintf(stderr,"after block broadcast\n");
 		strcpy(buffer, "0");
-
-		for (i = 0; i < pubCount; i++)
-		{
-			Transaction trans = createTransaction(blockCount, transactionCount, buffer, id, license);
-			fprintf(stderr,"before transaction broadcast\n");
-			broadcastTransaction(trans, connections, numHosts);
-			fprintf(stderr,"after transaction broadcast\n");
-			transactionCount++;
-			//updateTransactionCount(transactionCount);
-		}
 		blockCount++;
-		//close the sockets?
-
-	//updateBlockCount(blockCount);
+		//updateBlockCount(blockCount);
 		char EXIT = 'e';
 		for (i = 0; i < numHosts; i++)
 		{
 			close(connections[i]);
 		}
-	//broadcastEnd();
 	}
-	//exit()
-	//}
 }
 
 void server(char *service)
@@ -110,7 +80,7 @@ void server(char *service)
 	//(void) signal(SIGCHLD, reaper);
 	while (1)
 	{
-		fprintf(stderr, "Server Parent: My PID: %d\n", getpid());
+		//fprintf(stderr, "Server Parent: My PID: %d\n", getpid());
 		alen = sizeof(fsin);
 		ssock = accept(msock, (struct sockaddr *)&fsin, &alen);
 		if (ssock < 0) 
@@ -142,7 +112,10 @@ void server(char *service)
 						{
 							recieveTransaction(ssock);
 						}
-						exit(0);
+						else
+						{
+							exit(0);
+						}
 					}
 				}
 				break;
@@ -352,6 +325,7 @@ void transmitTransaction(Transaction trans, int s)
 	{
 		if (cc < 0)
 		{
+			fprintf(stderr, "Read failure\n");
 			exit(1);
 		} 
 		if(strncmp(buf,validMssg,strlen(validMssg))==0) 
