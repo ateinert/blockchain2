@@ -36,9 +36,10 @@ void client(char** hosts, char *service, const int numHosts)
 {
 	fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 	//child
-	//printf("Press ENTER once ready to start\n");
+	printf("Enter something to start\n");
 	fflush(stdout);
-	//getchar();
+	char *rand;
+	scanf("%s", rand);
 	while (1)
 	{
 		printf("\nBlocks sent: %d\n",	blockCount);
