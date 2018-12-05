@@ -35,7 +35,10 @@ void client(char** hosts, char *service, const int numHosts)
 	getchar();
 	while (1)
 	{
-		sleep(1);
+		char *s;
+		printf("Type \"publish\" to Send a Block and Transactions\n");
+		scanf("%s", s);
+		//if (strcpm(s, "publish"))
 		int connections[numHosts];
 		int i;
 		for (i = 0; i < numHosts; i++)
