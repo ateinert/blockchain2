@@ -31,24 +31,22 @@ void client(char** hosts, char *service, const int numHosts)
 {
 	//fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 	//child
-	
-	//child of child
-	printf("Press ENTER once ready to start\n");
-	getchar();
-
-	//while (1)
-	//spawn a child for the client
-	// this new child will create connections, send and die
-
-	int connections[numHosts];
-	int i;
-	for (i = 0; i < numHosts; i++)
-	{
-		connections[i] = connectTCP(hosts[i], service);
-	}
-
 	while (1)
 	{
+		printf("Press ENTER once ready to start\n");
+		getchar();
+
+		//while (1)
+		//spawn a child for the client
+		// this new child will create connections, send and die
+
+		int connections[numHosts];
+		int i;
+		for (i = 0; i < numHosts; i++)
+		{
+			connections[i] = connectTCP(hosts[i], service);
+		}
+
 		printf("Blocks sent: %d\n",	blockCount);
 		printf("Transactions sent: %d\n", transactionCount);
 		printf("Press ENTER to send a block and publish transactions\n");
