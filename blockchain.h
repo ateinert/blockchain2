@@ -9,6 +9,7 @@ typedef struct {
 
 typedef struct {
 	int transactionCount;
+	int forSale;
 	int parentBlock;
 	char prevHash[65];
 	char ownerKey[257];
@@ -34,7 +35,6 @@ void transmitSold(); 					// server: recieves intent to buy and generates and se
 void updateBlockCount(int);
 int loadBlockCount();
 Block createBlock(int, char[65]);
-Transaction createTransaction(int, int, char[65], char[257], char[129]);
 Block recieveBlock(int);
 void broadcastBlock(Block block, int connections[], int numHosts);
 void transmitBlock(Block block, int s);
@@ -44,6 +44,7 @@ int blockValidate(Block);
 
 void updateTransactionCount(int);
 int loadTransactionCount();
+Transaction createTransaction(int, int, int, char[65], char[257], char[129]);
 Transaction recieveTransaction(int);
 void broadcastTransaction(Transaction trans, int connections[], int numHosts);
 void tranmitTransaction(Transaction trans, int s);

@@ -67,7 +67,7 @@ void client(char** hosts, char *service, const int numHosts)
 			Block block = createBlock(blockCount, buffer);
 			broadcastBlock(block, connections, numHosts);
 			strcpy(buffer, "0");
-			Transaction trans = createTransaction(blockCount, transactionCount, buffer, id, license);
+			Transaction trans = createTransaction(blockCount, transactionCount,1, buffer, id, license);
 			broadcastTransaction(trans, connections, numHosts);
 			transactionCount++;
 			blockCount++;
@@ -171,10 +171,11 @@ Block createBlock(int num, char hash[65])
 	return block;
 }
 
-Transaction createTransaction(int blocknum, int transnum, char hash[65], char id[257], char key[129])
+Transaction createTransaction(int blocknum, int transnum, int toSell, char hash[65], char id[257], char key[129])
 {
 	Transaction trans = {
 		transnum,
+		toSell,
 		blocknum,
 		"o",
 		"o",
@@ -311,6 +312,10 @@ Transaction recieveTransaction(int fd)
 		if (transactionValidate(trans))
 		{
 			saveTransactionToFile(trans);
+			if (trans.forSale == 1)
+			{
+				addToSaleList(trans);
+			}
 			if (write(fd, validMssg, strlen(validMssg)) < 0)
 			{
 				exit(1);
