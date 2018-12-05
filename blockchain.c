@@ -57,7 +57,11 @@ void client(char** hosts, char *service, const int numHosts)
 
 		Block block = createBlock(blockCount, buffer);
 		broadcastBlock(block, connections, numHosts);
+		
 		strcpy(buffer, "0");
+		Transaction trans = createTransaction(blockCount, transactionCount, buffer, id, license);
+		broadcastTransaction(trans, connections, numHosts);
+		
 		blockCount++;
 		//updateBlockCount(blockCount);
 		char EXIT = 'e';
