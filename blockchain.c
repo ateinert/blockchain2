@@ -194,23 +194,24 @@ Block recieveBlock(int fd)
 	char validMssg[]="Block Valid\n";
 	int cc;
 	
-	cc = read(fd, &block, sizeof(Block));
-	if (cc < 0)
+	while (cc = read(fd, &block, sizeof(Block)))
 	{
-		exit(1);
-	}
-	//fprintf(stderr,"Block recieved\n");
-	if (blockValidate(block))
-	{
-		saveBlockToFile(block);
-		if (write(fd, validMssg, strlen(validMssg)) < 0)
+		if (cc < 0)
 		{
 			exit(1);
 		}
-		//fprintf(stderr,"Block verified\n");
-		return block;
+		//fprintf(stderr,"Block recieved\n");
+		if (blockValidate(block))
+		{
+			saveBlockToFile(block);
+			if (write(fd, validMssg, strlen(validMssg)) < 0)
+			{
+				exit(1);
+			}
+			//fprintf(stderr,"Block verified\n");
+			return block;
+		}
 	}
-	
 }
 
 void transmitBlock(Block block, int s)
@@ -298,21 +299,23 @@ Transaction recieveTransaction(int fd)
 	char validMssg[]="Transaction Valid\n";
 	int cc;
 	
-	cc = read(fd, &trans, sizeof(Transaction));
-	if (cc < 0)
+	while (cc = read(fd, &trans, sizeof(Transaction)))
 	{
-		exit(1);
-	}
-	//fprintf(stderr,"Transaction Recieved\n");
-	if (transactionValidate(trans))
-	{
-		saveTransactionToFile(trans);
-		if (write(fd, validMssg, strlen(validMssg)) < 0)
+		if (cc < 0)
 		{
 			exit(1);
-		} 
-		//fprintf(stderr,"Transaction Verified\n");
-		return trans;
+		}
+		//fprintf(stderr,"Transaction Recieved\n");
+		if (transactionValidate(trans))
+		{
+			saveTransactionToFile(trans);
+			if (write(fd, validMssg, strlen(validMssg)) < 0)
+			{
+				exit(1);
+			} 
+			//fprintf(stderr,"Transaction Verified\n");
+			return trans;
+		}
 	}
 }
 
