@@ -1,5 +1,7 @@
 //blockchain.cpp
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <sys/signal.h>
 #include <sys/socket.h>
 #include <sys/time.h>
@@ -27,6 +29,8 @@ extern int transactionCount;
 extern char* id;
 extern char* license;
 
+Transaction forSale[256];
+
 
 void client(char** hosts, char *service, const int numHosts)
 {
@@ -42,7 +46,7 @@ void client(char** hosts, char *service, const int numHosts)
 		char *s;
 		printf("\nType \"publish\" to Send a Block and Transactions\n");
 		printf("Type \"buy\" to See a List of Buyable transactions and purchase one\n");
-		scanf("%s", s);
+		scanf(" %s", s);
 		//if (strcpm(s, "publish"))
 		int connections[numHosts];
 		int i;
@@ -56,6 +60,7 @@ void client(char** hosts, char *service, const int numHosts)
 		char buffer[65];
 		if (strcmp(s, "publish") == 0)
 		{
+			transactionCount = 0;
 			strcpy(buffer, "0");
 			if (blockCount > 0)
 			{
@@ -63,13 +68,18 @@ void client(char** hosts, char *service, const int numHosts)
 				sprintf(str, "%d", blockCount - 1);
 				sha256_file(str, buffer);
 			}
-
 			Block block = createBlock(blockCount, buffer);
 			broadcastBlock(block, connections, numHosts);
+			int num;
+			//printf("Enter the number of transactions to create: ");
+			//scanf("%d", &num);
 			strcpy(buffer, "0");
-			Transaction trans = createTransaction(blockCount, transactionCount,1, buffer, id, license);
-			broadcastTransaction(trans, connections, numHosts);
-			transactionCount++;
+			for (i = 0; i < 10; ++i)
+			{
+				Transaction trans = createTransaction(blockCount, transactionCount,1, buffer, id, license);
+				//broadcastTransaction(trans, connections, numHosts);
+				transactionCount++;
+			}	
 			blockCount++;
 		}/*
 		else if (strcmp(s, "buy"))
@@ -262,7 +272,10 @@ void broadcastBlock(Block block, int connections[], int numHosts)
 void saveBlockToFile(Block block)
 {
 	FILE *file;
-	file = fopen(strcat(block.blockTitle, ".b"), "w");
+	char *new = strcat("blocks/", block.blockTitle);
+	mkdir(new, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	char *new2 = strcat(new, block.blockTitle);
+	file = fopen(strcat(new2, ".b"), "w");
 	if (file == NULL)
 	{
 		//fprintf(stderr, "\nError opening file1\n"); 
@@ -314,7 +327,7 @@ Transaction recieveTransaction(int fd)
 			saveTransactionToFile(trans);
 			if (trans.forSale == 1)
 			{
-				addToSaleList(trans);
+				//addToSaleList(trans);
 			}
 			if (write(fd, validMssg, strlen(validMssg)) < 0)
 			{
