@@ -36,9 +36,9 @@ void client(char** hosts, char *service, const int numHosts)
 {
 	fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 	//child
-	printf("Press ENTER once ready to start\n");
+	//printf("Press ENTER once ready to start\n");
 	fflush(stdout);
-	getchar();
+	//getchar();
 	while (1)
 	{
 		printf("\nBlocks sent: %d\n",	blockCount);
@@ -46,7 +46,6 @@ void client(char** hosts, char *service, const int numHosts)
 		char *s;
 		printf("\nType \"publish\" to Send a Block and Transactions\n");
 		printf("Type \"buy\" to See a List of Buyable transactions and purchase one\n");
-		scanf(" %s", s);
 		//if (strcpm(s, "publish"))
 		int connections[numHosts];
 		int i;
@@ -54,9 +53,11 @@ void client(char** hosts, char *service, const int numHosts)
 		{
 			connections[i] = connectTCP(hosts[i], service);
 		}
+		scanf("%s", s);
 		//loadBlockCount();
 		//loadTransactionsCount();
-
+		printf("%s\n", s);
+		fflush(stdout);
 		char buffer[65];
 		if (strcmp(s, "publish") == 0)
 		{
@@ -77,7 +78,7 @@ void client(char** hosts, char *service, const int numHosts)
 			for (i = 0; i < 10; ++i)
 			{
 				Transaction trans = createTransaction(blockCount, transactionCount,1, buffer, id, license);
-				//broadcastTransaction(trans, connections, numHosts);
+				broadcastTransaction(trans, connections, numHosts);
 				transactionCount++;
 			}	
 			blockCount++;
@@ -272,10 +273,10 @@ void broadcastBlock(Block block, int connections[], int numHosts)
 void saveBlockToFile(Block block)
 {
 	FILE *file;
-	char *new = strcat("blocks/", block.blockTitle);
-	mkdir(new, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-	char *new2 = strcat(new, block.blockTitle);
-	file = fopen(strcat(new2, ".b"), "w");
+	//char *new = strcat("blocks/", block.blockTitle);
+	//mkdir(new, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	//char *new2 = strcat(new, block.blockTitle);
+	file = fopen(strcat(block.blockTitle, ".b"), "w");
 	if (file == NULL)
 	{
 		//fprintf(stderr, "\nError opening file1\n"); 
