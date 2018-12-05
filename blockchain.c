@@ -79,6 +79,7 @@ void client(char** hosts, char *service, const int numHosts)
 		}
 		blockCount++;
 		//updateBlockCount(blockCount);
+		exit(0);
 	}
 	//broadcastEnd();
 	//exit()
