@@ -12,4 +12,4 @@ blockchain: main.c $(OBJECTS)
 	-o blockchain
 
 clean:
-	rm -f *.o core *~ blockchain
+	rm -f *.o *.b *.t core *~ blockchain

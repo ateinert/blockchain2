@@ -58,8 +58,8 @@ void client(char** hosts, char *service, const int numHosts)
 		scanf("%s", s);
 		//loadBlockCount();
 		//loadTransactionsCount();
-		printf("%s\n", s);
-		fflush(stdout);
+		//printf("%s\n", s);
+		//fflush(stdout);
 		char buffer[65];
 		if (strcmp(s, "publish") == 0)
 		{
@@ -85,12 +85,16 @@ void client(char** hosts, char *service, const int numHosts)
 			}	
 			blockCount++;
 
-			//wait to transmit one of these back with the user id and hash of the previous block
-		}/*
-		else if (strcmp(s, "buy"))
+		}
+		else if (strcmp(s, "buy") == 0)
 		{
 			//implement buying
-		}*/
+			printf("What transaction would you like to buy?");
+			char buy[128];
+			scanf("%s", buy);
+			buyTransaction(buy, connections[0]);
+			transactionCount++;
+		}
 
 		//updateBlockCount(blockCount);
 		for (i = 0; i < numHosts; i++)
@@ -157,6 +161,39 @@ void server(char *service)
 				break;
 			case -1:
 				exit(1);
+		}
+	}
+}
+
+void buyTransaction(char* fileName, int s)
+{
+	char header = 'p';
+	char buf[BUFSIZ];
+	char validMssg[] = "Buy Request Recieved";
+	int cc;
+
+	if (write(s, &header, sizeof(header)) < 0)
+	{
+		fprintf(stderr, "Header send failure\n");
+		exit(1);
+	}
+	//fprintf(stderr,"Header Sent\n");
+	if (write(s, fileName, strlen(fileName)) < 0)
+	{
+		fprintf(stderr, "File name send failure\n");
+		exit(1);
+	}
+	//fprintf(stderr,"Block Sent\n");
+	while (cc = read(s, buf, sizeof buf)) 
+	{
+		if (cc < 0)
+		{
+			exit(1);
+		}
+		if(strncmp(buf,validMssg,strlen(validMssg))==0) 
+		{
+			printf("Request Recieved\n");
+			break;
 		}
 	}
 }
