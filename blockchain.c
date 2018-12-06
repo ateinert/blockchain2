@@ -84,6 +84,8 @@ void client(char** hosts, char *service, const int numHosts)
 				transactionCount++;
 			}	
 			blockCount++;
+
+			//wait to transmit one of these back with the user id and hash of the previous block
 		}/*
 		else if (strcmp(s, "buy"))
 		{
