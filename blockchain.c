@@ -95,7 +95,6 @@ void client(char** hosts, char *service, const int numHosts)
 			Transaction trans = loadTransactionFromFile(buy);
 			sha256_file(buy, trans.prevHash);
 			trans.transactionCount = transactionCount;
-			trans.
 			broadcastTransaction(trans, connections, numHosts);
 			transactionCount++;
 			printf("Purchase Made\n");
