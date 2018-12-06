@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 	blockCount = 0;
 	transactionCount = 0;
 
-	mkdir("blocks", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	//mkdir("blocks", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
 	// may load from file
 	id = "7kzf5fl8dX7lsUfUDSvCcBeAoUVZyfWefr02SzYVkXWjsgDWCRJgHeCAoCkUqRuLK0N5fQLG7fqimZwBLAL40hYCaFwNbjmB1KlNPtm8pwQDSehXzgAPKFPaqPR8KFJDTLcxzSwseZ2fsBHbzZgpud909z2yA5u8kkM9HEAYB7Au7YzMAl9WWAdRkK0ESZwF70RGBdNkOASOx2okb29SVnNDOqG7t7B5LqveNfRtJRqkcHYNlUnsymES3DGnfi6p";
