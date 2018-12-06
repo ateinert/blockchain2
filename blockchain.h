@@ -51,7 +51,6 @@ void tranmitTransaction(Transaction trans, int s);
 void saveTransactionToFile(Transaction);
 Transaction loadTransactionFromFile(char*);
 int transactionValidate(Transaction);
-void buyTransaction(char *, int);
 
 void sha256(char *string, char outputBuffer[65]);
 int sha256_file(char *path, char outputBuffer[65]);

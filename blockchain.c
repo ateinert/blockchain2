@@ -89,11 +89,16 @@ void client(char** hosts, char *service, const int numHosts)
 		else if (strcmp(s, "buy") == 0)
 		{
 			//implement buying
-			printf("What transaction would you like to buy?");
+			printf("What transaction would you like to buy? ");
 			char buy[128];
 			scanf("%s", buy);
-			buyTransaction(buy, connections[0]);
+			Transaction trans = loadTransactionFromFile(buy);
+			sha256_file(buy, trans.prevHash);
+			trans.transactionCount = transactionCount;
+			trans.
+			broadcastTransaction(trans, connections, numHosts);
 			transactionCount++;
+			printf("Purchase Made\n");
 		}
 
 		//updateBlockCount(blockCount);
@@ -165,38 +170,6 @@ void server(char *service)
 	}
 }
 
-void buyTransaction(char* fileName, int s)
-{
-	char header = 'p';
-	char buf[BUFSIZ];
-	char validMssg[] = "Buy Request Recieved";
-	int cc;
-
-	if (write(s, &header, sizeof(header)) < 0)
-	{
-		fprintf(stderr, "Header send failure\n");
-		exit(1);
-	}
-	//fprintf(stderr,"Header Sent\n");
-	if (write(s, fileName, strlen(fileName)) < 0)
-	{
-		fprintf(stderr, "File name send failure\n");
-		exit(1);
-	}
-	//fprintf(stderr,"Block Sent\n");
-	while (cc = read(s, buf, sizeof buf)) 
-	{
-		if (cc < 0)
-		{
-			exit(1);
-		}
-		if(strncmp(buf,validMssg,strlen(validMssg))==0) 
-		{
-			printf("Request Recieved\n");
-			break;
-		}
-	}
-}
 
 int blockValidate(Block block)
 {
