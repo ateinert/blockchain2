@@ -5,7 +5,7 @@
  * Digital License Exchange
  * Aaron Teinert 
  * Dr. Lopamudra Roychoudhuri
- * Honors
+ * Honors Fall 2018
  *
  */
 
