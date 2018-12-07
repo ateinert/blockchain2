@@ -1,3 +1,14 @@
+/*
+ * openBlock.c
+ * 
+ * Blockchain Research
+ * Digital License Exchange
+ * Aaron Teinert 
+ * Dr. Lopamudra Roychoudhuri
+ * Honors
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

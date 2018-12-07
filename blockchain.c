@@ -1,4 +1,14 @@
-//blockchain.cpp
+/*
+ * blockchain.c
+ * 
+ * Blockchain Research
+ * Digital License Exchange
+ * Aaron Teinert 
+ * Dr. Lopamudra Roychoudhuri
+ * Honors
+ * 
+ */
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -31,26 +41,33 @@ extern char* license;
 
 Transaction forSale[256];
 
-
 void client(char** hosts, char *service, const int numHosts)
 {
-	fprintf(stderr, "Main Child: My PID: %d, Parent PID: %d\n", getpid(), getppid());
-	//child
+	//child client
+
+	//pause so we can wait for the server to startup
 	printf("Enter something to start\n");
 	fflush(stdout);
 	char rand[128];
 	scanf("%s", rand);
+
+	//start the server
 	while (1)
 	{
+
+		//load the last know number of blocks and transactions
 		loadBlockCount();
 		loadTransactionCount();
 
+		//print the number of blocks and transactions
 		printf("\nBlocks sent: %d\n",	blockCount);
 		printf("Transactions sent: %d\n", transactionCount);
 
+		//ask the user what they want to do
 		printf("\nType \"publish\" to Send a Block and Transactions\n");
 		printf("Type \"buy\" to See a List of Buyable transactions and purchase one\n");
 
+		//connect to the other nodes
 		int connections[numHosts];
 		int i;
 		for (i = 0; i < numHosts; i++)
@@ -58,10 +75,13 @@ void client(char** hosts, char *service, const int numHosts)
 			connections[i] = connectTCP(hosts[i], service);
 		}
 
+		//read in the input
 		char s[128];
 		scanf("%s", s);
 
 		char buffer[65];
+
+		//publisher
 		if (strcmp(s, "publish") == 0)
 		{
 			loadBlockCount();
@@ -76,8 +96,6 @@ void client(char** hosts, char *service, const int numHosts)
 			Block block = createBlock(blockCount, buffer);
 			broadcastBlock(block, connections, numHosts);
 			int num;
-			//printf("Enter the number of transactions to create: ");
-			//scanf("%d", &num);
 			strcpy(buffer, "0");
 			for (i = 0; i < 10; ++i)
 			{
@@ -90,9 +108,9 @@ void client(char** hosts, char *service, const int numHosts)
 			blockCount++;
 			updateBlockCount(blockCount);
 		}
+		//buyer
 		else if (strcmp(s, "buy") == 0)
 		{
-			//implement buying
 			loadTransactionCount();
 			printf("What transaction would you like to buy? ");
 			char buy[128];
@@ -106,7 +124,7 @@ void client(char** hosts, char *service, const int numHosts)
 			printf("Purchase Made\n");
 		}
 
-		//updateBlockCount(blockCount);
+		//close all of the connections
 		for (i = 0; i < numHosts; i++)
 		{
 			close(connections[i]);

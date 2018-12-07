@@ -1,4 +1,13 @@
-//blockchain.h
+/*
+ * blockchain.h
+ * 
+ * Blockchain Research
+ * Digital License Exchange
+ * Aaron Teinert 
+ * Dr. Lopamudra Roychoudhuri
+ * Honors
+ * 
+ */
 
 typedef struct {	
 	char prevHash[65];

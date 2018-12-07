@@ -1,7 +1,15 @@
-//main.cpp
+/*
+ * main.c
+ * 
+ * Blockchain Research
+ * Digital License Exchange
+ * Aaron Teinert 
+ * Dr. Lopamudra Roychoudhuri
+ * Honors
+ * 
+ */
 
 //sudo apt install libssl-dev
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -22,9 +30,7 @@ int main(int argc, char **argv)
 	blockCount = 0;
 	transactionCount = 0;
 
-	//mkdir("blocks", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-
-	// may load from file
+	// may load from file instead
 	id = "7kzf5fl8dX7lsUfUDSvCcBeAoUVZyfWefr02SzYVkXWjsgDWCRJgHeCAoCkUqRuLK0N5fQLG7fqimZwBLAL40hYCaFwNbjmB1KlNPtm8pwQDSehXzgAPKFPaqPR8KFJDTLcxzSwseZ2fsBHbzZgpud909z2yA5u8kkM9HEAYB7Au7YzMAl9WWAdRkK0ESZwF70RGBdNkOASOx2okb29SVnNDOqG7t7B5LqveNfRtJRqkcHYNlUnsymES3DGnfi6p";
 	license = "VrGNpz87DHaYlp97cWS7JFpxlRNruIw9xPGWRfrzHznzwDzw0YB8d4SiEzzI3ewwbGSVUk6aUu66E4olapwvmHuBeg6kBItcuEljq6kFPEuykvaQ0BjmaXCVDwOAkdaK";
 
@@ -47,26 +53,22 @@ int main(int argc, char **argv)
 		hosts[i] = argv[i + 2];
 	}
 	
-
 	//reaper
 	(void) signal(SIGCHLD, reaper);
 
-	//fork
+	//fork to create client and server
 	printf("Fork");
 	fflush(stdout);
 	int pid = fork();
 	if (pid > 0)
 	{
 		//parent process
-
-		//fprintf(stderr, "Main Parent: My PID: %d, Parent PID: %d\n", getpid(), getppid());
 		(void) server(service);
 		exit(0);
 	}
 	else if (pid == 0)
 	{
 		//child process
-		
 		(void) client(hosts, service, numHosts);
 		exit(0);
  	}
