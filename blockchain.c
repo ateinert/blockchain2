@@ -69,7 +69,7 @@ void client(char** hosts, char *service, const int numHosts)
 			{
 				char str[129];
 				sprintf(str, "%d", blockCount - 1);
-				sha256_file(str, buffer);
+				sha256_file(strcat(str, ".b"), buffer);
 			}
 			Block block = createBlock(blockCount, buffer);
 			broadcastBlock(block, connections, numHosts);

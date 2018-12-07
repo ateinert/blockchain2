@@ -23,9 +23,6 @@ void client(char** hosts, char *service, const int numHosts);
 int passiveTCP(const char*, int);
 int connectTCP(const char*, const char*);
 
-void updateWallet();
-int loadWallet();
-
 void sell(Transaction trans); 			// client: sends a transaction for sale to other nodes, gets added to list of buyable stuff;
 void saleIntent(Transaction); 			// server: recieves intent to sell
 void seeForSale(); 						// all: loads the for sale list to UI

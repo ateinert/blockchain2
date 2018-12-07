@@ -46,12 +46,20 @@ int sha256_file(char *path, char outputBuffer[65])
 	return 0;
 }
 
-int main()
+int main(int argc, char **argv)
 {
     char str[128];
     char buffer[65];
-    printf("Enter the name of the file you want to see converted to SHA256: ");
-    scanf("%s", str);
+
+    if (argc == 1)
+    {
+        printf("Enter the name of the file you want to see converted to SHA256: ");
+        scanf("%s", str);
+    }
+    else
+    {
+        strcpy(str, argv[1]);
+    }
     sha256_file(str, buffer);
     printf("The hash of the file is: \n%s\n", buffer);
     return 0;
