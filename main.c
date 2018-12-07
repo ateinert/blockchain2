@@ -57,7 +57,6 @@ int main(int argc, char **argv)
 	(void) signal(SIGCHLD, reaper);
 
 	//fork to create client and server
-	printf("Fork");
 	fflush(stdout);
 	int pid = fork();
 	if (pid > 0)
