@@ -42,28 +42,30 @@ void client(char** hosts, char *service, const int numHosts)
 	scanf("%s", rand);
 	while (1)
 	{
+		loadBlockCount();
+		loadTransactionCount();
 
 		printf("\nBlocks sent: %d\n",	blockCount);
 		printf("Transactions sent: %d\n", transactionCount);
-		char s[128];
+
 		printf("\nType \"publish\" to Send a Block and Transactions\n");
 		printf("Type \"buy\" to See a List of Buyable transactions and purchase one\n");
-		//if (strcpm(s, "publish"))
+
 		int connections[numHosts];
 		int i;
 		for (i = 0; i < numHosts; i++)
 		{
 			connections[i] = connectTCP(hosts[i], service);
 		}
+
+		char s[128];
 		scanf("%s", s);
-		//loadBlockCount();
-		//loadTransactionsCount();
-		//printf("%s\n", s);
-		//fflush(stdout);
+
 		char buffer[65];
 		if (strcmp(s, "publish") == 0)
 		{
-			transactionCount = 0;
+			loadBlockCount();
+			loadTransactionCount();
 			strcpy(buffer, "0");
 			if (blockCount > 0)
 			{
@@ -79,16 +81,19 @@ void client(char** hosts, char *service, const int numHosts)
 			strcpy(buffer, "0");
 			for (i = 0; i < 10; ++i)
 			{
+				loadTransactionCount();
 				Transaction trans = createTransaction(blockCount, transactionCount,1, buffer, id, license);
 				broadcastTransaction(trans, connections, numHosts);
 				transactionCount++;
+				updateTransactionCount(transactionCount);
 			}	
 			blockCount++;
-
+			updateBlockCount(blockCount);
 		}
 		else if (strcmp(s, "buy") == 0)
 		{
 			//implement buying
+			loadTransactionCount();
 			printf("What transaction would you like to buy? ");
 			char buy[128];
 			scanf("%s", buy);
@@ -97,6 +102,7 @@ void client(char** hosts, char *service, const int numHosts)
 			trans.transactionCount = transactionCount;
 			broadcastTransaction(trans, connections, numHosts);
 			transactionCount++;
+			updateTransactionCount(transactionCount);
 			printf("Purchase Made\n");
 		}
 
@@ -148,10 +154,14 @@ void server(char *service)
 						if (buffer == 'b')
 						{
 							recieveBlock(ssock);
+							loadBlockCount();
+							updateBlockCount(++blockCount);
 						}
 						else if (buffer == 't')
 						{
 							recieveTransaction(ssock);
+							loadTransactionCount();
+							updateTransactionCount(++transactionCount);
 						}
 						else
 						{
@@ -169,6 +179,63 @@ void server(char *service)
 	}
 }
 
+void updateBlockCount(int count)
+{
+	FILE *file;
+	file = fopen("blockCount", "w");
+	fprintf(file, "%d", count);
+	blockCount = count;
+	fclose(file);
+}
+
+int loadBlockCount()
+{
+	int count = 0;
+	FILE *file;
+	file = fopen("blockCount", "r");
+	if (file != NULL)
+	{
+		fscanf(file, "%d", &count);
+		blockCount = count;
+	}
+	else	
+	{
+		file = fopen("blockCount", "w");
+		fprintf(file, "%d", 0);
+	}
+	blockCount = count;
+	fclose(file);
+	return count;
+}
+
+void updateTransactionCount(int count)
+{
+	FILE *file;
+	file = fopen("transactionCount", "w");
+	fprintf(file, "%d", count);
+	transactionCount = count;
+	fclose(file);
+}
+
+int loadTransactionCount()
+{
+	int count = 0;
+	FILE *file;
+	file = fopen("transactionCount", "r");
+	if (file != NULL)
+	{
+		fscanf(file, "%d", &count);
+		transactionCount = count;
+	}
+	else	
+	{
+		file = fopen("transactionCount", "w");
+		fprintf(file, "%d", 0);
+	}
+	transactionCount = count;
+	fclose(file);
+	return count;
+}
 
 int blockValidate(Block block)
 {

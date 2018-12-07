@@ -22,6 +22,6 @@ openBlock: openBlock.c
 openBTransaction: openTransaction.c
 	$(CXX) openTransaction.c \
 	-o openTransaction
-	
+
 clean:
-	rm -f *.o *.b *.t *.out core *~ blockchain sha256 openBlock openTransaction
+	rm -f *.o *.b *.t *.out core transactionCount blockCount *~ blockchain sha256 openBlock openTransaction
